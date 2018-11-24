@@ -39,13 +39,13 @@ public class ServerResponse<T> {
     /**
      *调用接口成功时回调
      * */
-    public  static  ServerResponse serverResponseBySuccess(){
+    public  static  ServerResponse createServerResponseBySuccess(){
         return new ServerResponse(ResponseCode.SUCESS);
     }
-    public  static  <T> ServerResponse serverResponseBySuccess(T data){
+    public  static  <T> ServerResponse createServerResponseBySuccess(T data){
         return new ServerResponse(ResponseCode.SUCESS,data);
     }
-    public  static  <T> ServerResponse serverResponseBySuccess(T data,String msg){
+    public  static  <T> ServerResponse createServerResponseBySuccess(T data,String msg){
         return new ServerResponse(ResponseCode.SUCESS,data,msg);
     }
 
@@ -53,17 +53,17 @@ public class ServerResponse<T> {
      * 接口调用失败时回调
      * */
 
-    public static  ServerResponse serverResponseByError(){
+    public static  ServerResponse createServerResponseByError(){
         return new ServerResponse(ResponseCode.ERROR);
     }
 
-    public static  ServerResponse serverResponseByError(String msg){
+    public static  ServerResponse createServerResponseByError(String msg){
         return new ServerResponse(ResponseCode.ERROR,msg);
     }
-    public static  ServerResponse serverResponseByError(int status){
+    public static  ServerResponse createServerResponseByError(int status){
         return new ServerResponse(status);
     }
-    public static  ServerResponse serverResponseByError(int status,String msg){
+    public static  ServerResponse createServerResponseByError(int status,String msg){
         return new ServerResponse(status,msg);
     }
 

@@ -11,8 +11,10 @@
             <property name="suppressAllComments" value="false"/>
             <property name="suppressDate" value="true"/>
         </commentGenerator>
-        <jdbcConnection userId="${spring.datasource.username}" password="${spring.datasource.password}" driverClass="${spring.datasource.driver-class-name}"
-                        connectionURL="${spring.datasource.url}"/>
+        <jdbcConnection userId="${spring.datasource.druid.username}"
+                        password="${spring.datasource.druid.password}"
+                        driverClass="${spring.datasource.druid.driver-class-name}"
+                        connectionURL="${spring.datasource.druid.url}"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>

@@ -1,6 +1,6 @@
 package com.neuedu.common;
 
-import com.neuedu.utils.PropertiesUtils;
+import com.neuedu.util.PropertiesUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
