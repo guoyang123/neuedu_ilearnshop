@@ -1,5 +1,6 @@
-package com.neuedu.utils;
+package com.neuedu.util;
 
+import com.neuedu.pojo.UserInfo;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -38,7 +39,6 @@ public class DateUtils {
         DateTime dateTime=dateTimeFormatter.parseDateTime(str);
         return dateTime.toDate();
     }
-
 
 
 }

@@ -1,4 +1,4 @@
-package com.neuedu.utils;
+package com.neuedu.util;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

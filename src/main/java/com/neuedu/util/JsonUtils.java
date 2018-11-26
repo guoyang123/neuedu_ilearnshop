@@ -1,4 +1,4 @@
-package com.neuedu.utils;
+package com.neuedu.util;
 
 import com.google.common.collect.Lists;
 import com.neuedu.pojo.UserInfo;

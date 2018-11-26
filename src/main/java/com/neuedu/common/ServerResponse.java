@@ -49,6 +49,7 @@ public class ServerResponse<T> {
         return new ServerResponse(ResponseCode.SUCESS,data,msg);
     }
 
+
     /**
      * 接口调用失败时回调
      * */

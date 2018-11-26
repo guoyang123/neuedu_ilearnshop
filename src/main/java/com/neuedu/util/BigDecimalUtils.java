@@ -1,4 +1,4 @@
-package com.neuedu.utils;
+package com.neuedu.util;
 
 import java.math.BigDecimal;
 

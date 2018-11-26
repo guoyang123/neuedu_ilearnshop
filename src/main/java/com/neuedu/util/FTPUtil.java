@@ -1,4 +1,4 @@
-package com.neuedu.utils;
+package com.neuedu.util;
 
 import org.apache.commons.net.ftp.FTPClient;
 

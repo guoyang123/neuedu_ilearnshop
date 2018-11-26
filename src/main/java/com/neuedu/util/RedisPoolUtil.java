@@ -1,4 +1,4 @@
-package com.neuedu.utils;
+package com.neuedu.util;
 
 import com.neuedu.common.RedisPool;
 import redis.clients.jedis.Jedis;
