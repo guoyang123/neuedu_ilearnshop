@@ -1,13 +1,8 @@
 package com.neuedu.util;
 
 import org.apache.commons.net.ftp.FTPClient;
-import sun.net.ftp.*;
 
 import java.io.*;
-import java.net.Proxy;
-import java.net.SocketAddress;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class FTPUtil {

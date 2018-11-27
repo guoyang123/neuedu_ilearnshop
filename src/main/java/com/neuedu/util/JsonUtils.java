@@ -10,7 +10,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.type.JavaType;
 import org.codehaus.jackson.type.TypeReference;
 
-import javax.swing.event.ListDataListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
