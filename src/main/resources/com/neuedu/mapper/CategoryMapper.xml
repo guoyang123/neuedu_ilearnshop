@@ -71,6 +71,11 @@
     from neuedu_category
     where parent_id = #{parentId}
   </select>
+  <select id="getChildIds" resultType="Integer">
+    select id
+    from neuedu_category
+    where parent_id = #{parentId}
+  </select>
   <update id="updateName">
     update neuedu_category set name = #{name} where id = #{categoryId}
   </update>

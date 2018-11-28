@@ -15,28 +15,36 @@ public class CategoryManagerController {
     @Autowired
     private ICategoryService categoryService;
 
-    @GetMapping("getChilds")
-    public ServerResponse<Category> getChilds(Integer parentId){
+    @GetMapping("get_category.do")
+    public ServerResponse<Category> getChilds(Integer categoryId){
         //用户登录校验
         //用户权限校验
         //查询子类别
-         return categoryService.getChilds(parentId);
+         return categoryService.getChilds(categoryId);
     }
 
-    @PostMapping("add")
-    public ServerResponse<Category> add(String name, @RequestParam(value = "parentId",required = false,defaultValue = "0") Integer parentId){
+    @PostMapping("add_category.do")
+    public ServerResponse<Category> add(String categoryName, @RequestParam(value = "parentId",required = false,defaultValue = "0") Integer parentId){
         //用户登录校验
         //用户权限校验
         //查询子类别
-        return categoryService.add(name,parentId);
+        return categoryService.add(categoryName,parentId);
     }
 
-    @PostMapping("updateName")
-    public ServerResponse<Category> updateName(String name,  Integer categoryId){
+    @PostMapping("set_category_name.do")
+    public ServerResponse<Category> updateName(String categoryName,  Integer categoryId){
         //用户登录校验
         //用户权限校验
         //查询子类别
-        return categoryService.updateName(name,categoryId);
+        return categoryService.updateName(categoryName,categoryId);
+    }
+
+    @GetMapping("get_deep_category.do")
+    public ServerResponse getDeepCategory(Integer categoryId){
+        //用户登录校验
+        //用户权限校验
+        //查询子类别
+        return categoryService.getDeepCategory(categoryId);
     }
 
     @GetMapping("getAllChilds")

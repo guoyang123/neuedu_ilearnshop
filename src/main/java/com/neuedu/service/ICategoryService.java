@@ -11,4 +11,5 @@ public interface ICategoryService {
     public ServerResponse<Category> add(String name,Integer parentId);
     public ServerResponse<Category> updateName(String name,Integer categoryId);
     public ServerResponse<Category> getAllChilds(Integer parentId);
+    public ServerResponse getDeepCategory(Integer parentId);
 }
