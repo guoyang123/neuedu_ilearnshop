@@ -52,4 +52,19 @@ public class ResponseCode {
 
     /*用户未登录，无法获取当前用户信息,status=10强制退出*/
     public static final int FORCE_EXIT = 10;
+
+    /*=====================商品相关==========================*/
+
+    /*搜索商品参数错误*/
+    public static final int ERROR_PAMAR = 1;
+
+    /*搜索商品不存在*/
+    public static final int NO_PRODUCT = 4;
+
+    /*====================购物车相关=========================*/
+    /*用户未登录*/
+    public  static final int NO_SESSION = 10;
+
+    /*购物车是空的*/
+    public  static final int EMPTY_CART = 1;
 }

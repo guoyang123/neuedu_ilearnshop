@@ -88,16 +88,16 @@
     -->
     update neuedu_user
     <set>
-      <if test="email != null">
+      <if test="@com.neuedu.util.OpinionUtils@emptyString(email)">
     email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="@com.neuedu.util.OpinionUtils@emptyString(phone)">
     phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="question != null">
+      <if test="@com.neuedu.util.OpinionUtils@emptyString(question)">
     question = #{question,jdbcType=VARCHAR},
       </if>
-      <if test="answer != null">
+      <if test="@com.neuedu.util.OpinionUtils@emptyString(answer)">
     answer = #{answer,jdbcType=VARCHAR},
       </if>
     update_time = now()

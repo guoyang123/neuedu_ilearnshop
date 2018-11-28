@@ -128,11 +128,18 @@ public class UserServiceImpl implements IUserService {
             sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.NO_LOGIN.getCode(),Const.ReponseCodeEnum.NO_LOGIN.getDesc());
             return sr;
         }else{
-            ui.setPassword("");
-            ui.setQuestion("");
-            ui.setAnswer("");
-            ui.setRole(null);
-            sr = ServerResponse.createServerResponseBySuccess(ui);
+            UserInfo ui2 = new UserInfo();
+            ui2.setId(ui.getId());
+            ui2.setUsername(ui.getUsername());
+            ui2.setEmail(ui.getEmail());
+            ui2.setPhone(ui.getPhone());
+            ui2.setCreateTime(ui.getCreateTime());
+            ui2.setUpdateTime(ui.getUpdateTime());
+            ui2.setPassword("");
+            ui2.setQuestion("");
+            ui2.setAnswer("");
+            ui2.setRole(null);
+            sr = ServerResponse.createServerResponseBySuccess(ui2);
             return sr;
         }
     }

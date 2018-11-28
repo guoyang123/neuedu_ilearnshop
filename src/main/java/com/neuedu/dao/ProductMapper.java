@@ -1,6 +1,8 @@
 package com.neuedu.dao;
 
 import com.neuedu.pojo.Product;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface ProductMapper {
@@ -43,4 +45,26 @@ public interface ProductMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Product record);
+
+    /*产品搜索及动态排序List*/
+    /*categoryId非空_keyword非空_categoryId下面有子类_查询所有子类包含关键词的商品*/
+    List<Product> selectByCategoryIdAndKeywordAndData(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword,@Param("data") List data);
+
+    /*categoryId非空_keyword非空_categoryId下面没有子类_查询当前分类包含关键词的商品*/
+    List<Product> selectByCategoryIdAndKeyword(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword);
+
+    /*categoryId非空_keyword空_categoryId下面有子类_查询所有子类所有商品*/
+    List<Product> selectByCategoryIdAndData(@Param("categoryId") Integer categoryId, @Param("data") List data);
+
+    /*categoryId非空_keyword空_categoryId下面没有子类_查询当前分类所有的商品*/
+    List<Product> selectByCategoryId(Integer categoryId);//根据商品类型查询数据
+
+    /*categoryId空_keyword非空_查询所有分类包含关键词的商品*/
+    List<Product> selectByKeyword(String keyword);//根据关键词查询数据
+
+    /*categoryId空_keyword空_返回空数据*/
+
+
+
+
 }

@@ -1,6 +1,8 @@
 package com.neuedu.dao;
 
 import com.neuedu.pojo.Cart;
+import com.neuedu.pojo.UserInfo;
+
 import java.util.List;
 
 public interface CartMapper {
@@ -43,4 +45,7 @@ public interface CartMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Cart record);
+
+    /*查询用户对应购物信息*/
+    List<Cart> selectByUID(Integer uid);
 }

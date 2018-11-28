@@ -65,4 +65,11 @@
     select id, user_id, product_id, quantity, checked, create_time, update_time
     from neuedu_cart
   </select>
+
+  <!--查询用户对应购物信息-->
+  <select id="selectByUID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, user_id, product_id, quantity, checked, create_time, update_time
+    from neuedu_cart
+    where user_id = #{uid,jdbcType=INTEGER}
+  </select>
 </mapper>

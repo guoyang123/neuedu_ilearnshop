@@ -99,7 +99,10 @@ public class Const {
 
          PRODUCT_ONLINE(1,"在售"),
         PRODUCT_OFFLINE(2,"下架"),
-        PRODUCT_DELETE(3,"删除")
+        PRODUCT_DELETE(3,"删除"),
+        ERROR_PAMAR(ResponseCode.ERROR_PAMAR,"参数错误"),
+        NO_PRODUCT(ResponseCode.NO_PRODUCT,"该商品已下架")
+
         ;
         private  int  code;
         private String desc;
@@ -129,7 +132,9 @@ public class Const {
     public  enum  CartCheckedEnum{
 
         PRODUCT_CHECKED(1,"已勾选"),
-        PRODUCT_UNCHECKED(0,"未勾选")
+        PRODUCT_UNCHECKED(0,"未勾选"),
+        NO_SESSION(ResponseCode.NO_SESSION,"用户未登录,请登录"),
+        EMPTY_CART(ResponseCode.EMPTY_CART,"还没有选中任何商品哦~")
         ;
 
         private  int  code;
