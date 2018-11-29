@@ -43,4 +43,6 @@ public interface ShippingMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Shipping record);
+
+    int updateByPrimaryKeySelective(Shipping record);
 }
