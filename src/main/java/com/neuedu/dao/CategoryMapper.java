@@ -47,5 +47,6 @@ public interface CategoryMapper {
     int updateByPrimaryKey(Category record);
 
     public List<Category> getChilds(@Param("parentId") Integer parentId);
+    public List<Integer> getChildIds(@Param("parentId") Integer parentId);
     int updateName(@Param("name")String name,@Param("categoryId")Integer categoryId);
 }
