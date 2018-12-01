@@ -77,6 +77,7 @@ public class CategoryServiceImpl implements ICategoryService {
             ServerResponse.createServerResponseByError("参数不能为空！");
         }
         List<Integer> list = new ArrayList<>();
+        list.add(parentId);
         getDeepChilds(parentId,list);
         return ServerResponse.createServerResponseBySuccess(list);
     }
