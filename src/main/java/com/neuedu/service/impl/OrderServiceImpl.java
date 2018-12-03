@@ -15,7 +15,6 @@ import com.neuedu.util.OpinionUtils;
 import com.neuedu.util.POJOtoVOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.plugin2.util.PojoUtil;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
