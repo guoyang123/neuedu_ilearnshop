@@ -130,11 +130,16 @@ public class Const {
 
 
     public  enum  CartCheckedEnum{
-
+        EMPTY_PARAM(ResponseCode.EMPTY_PARAM,"参数不能为空"),
+        BZ_XQ(101,"商品详情页更新数量"),
+        BZ_GWC(102,"购物车页面更新数量"),
         PRODUCT_CHECKED(1,"已勾选"),
         PRODUCT_UNCHECKED(0,"未勾选"),
         NO_SESSION(ResponseCode.NO_SESSION,"用户未登录,请登录"),
-        EMPTY_CART(ResponseCode.EMPTY_CART,"还没有选中任何商品哦~")
+        EMPTY_CART(ResponseCode.EMPTY_CART,"还没有选中任何商品哦~"),
+        FALSE_UPDATE(ResponseCode.FALSE_UPDATE,"更新数据失败"),
+        UNEXIST_P(ResponseCode.UNEXIST_P,"商品不存在")
+
         ;
 
         private  int  code;
@@ -168,7 +173,14 @@ public class Const {
         ORDER_PAYED(20,"已付款"),
         ORDER_SEND(40,"已发货"),
         ORDER_SUCCESS(50,"交易成功"),
-        ORDER_CLOSED(60,"交易关闭")
+        ORDER_CLOSED(60,"交易关闭"),
+        FALSE_CREAT(ResponseCode.FALSE_CREAT,"创建订单失败"),
+        ORDEREMPTY_PARAM(ResponseCode.ORDEREMPTY_PARAM,"参数不能为空"),
+        EMPTY_CARTS(ResponseCode.EMPTY_CARTS,"还没有选中任何商品"),
+        LACK_PRODUCT(ResponseCode.LACK_PRODUCT,"商品库存不足"),
+        NO_ORDERMSG(ResponseCode.NO_ORDERMSG,"未查询到订单信息"),
+        ACCOUNT_PAID(ResponseCode.ACCOUNT_PAID,"订单不可取消")
+
         ;
         private  int  code;
         private String desc;
@@ -208,7 +220,8 @@ public class Const {
 
     public  enum PaymentEnum{
 
-        ONLINE(1,"线上支付")
+        ONLINE(1,"线上支付"),
+        OUTLINE(2,"线下支付")
         ;
         private  int  code;
         private String desc;

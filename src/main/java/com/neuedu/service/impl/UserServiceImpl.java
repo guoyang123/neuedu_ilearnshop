@@ -125,7 +125,7 @@ public class UserServiceImpl implements IUserService {
         //获取session中的数据
         UserInfo ui = (UserInfo) session.getAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc());
         if(ui == null){
-            sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.NO_LOGIN.getCode(),Const.ReponseCodeEnum.NO_LOGIN.getDesc());
+            sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.FORCE_EXIT.getCode(),Const.ReponseCodeEnum.FORCE_EXIT.getDesc());
             return sr;
         }else{
             UserInfo ui2 = new UserInfo();
@@ -246,7 +246,7 @@ public class UserServiceImpl implements IUserService {
         //判断登录状态,获取session
         UserInfo ui = (UserInfo) session.getAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc());
         if(ui == null){
-            sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.NO_LOGIN.getCode(),Const.ReponseCodeEnum.NO_LOGIN.getDesc());
+            sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.FORCE_EXIT.getCode(),Const.ReponseCodeEnum.FORCE_EXIT.getDesc());
             return sr;
         }else{
             //参数非空判定
@@ -262,6 +262,8 @@ public class UserServiceImpl implements IUserService {
             int res = userInfoMapper.updateByUserNameAndPasswordOld(ui.getUsername(),MD5Utils.getMD5Code(passwordOld),MD5Utils.getMD5Code(passwordNew));
             if(res == 1){
                 sr = ServerResponse.createServerResponseBySuccess(Const.ReponseCodeEnum.SUCCESS_PASSWORDNEW.getDesc());
+                //重置密码成功后销毁session,重新登录
+                session.removeAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc());
                 return sr;
             }else{
                 sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.ERROR_PASSWORDOLD.getCode(),Const.ReponseCodeEnum.ERROR_PASSWORDOLD.getDesc());
@@ -278,7 +280,7 @@ public class UserServiceImpl implements IUserService {
         //判断登录状态,获取session
         UserInfo ui = (UserInfo) session.getAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc());
         if(ui == null){
-            sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.NO_LOGIN.getCode(),Const.ReponseCodeEnum.NO_LOGIN.getDesc());
+            sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.FORCE_EXIT.getCode(),Const.ReponseCodeEnum.FORCE_EXIT.getDesc());
             return sr;
         }else{
             //参数非空判定

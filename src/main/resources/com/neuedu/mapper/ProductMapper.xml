@@ -94,7 +94,7 @@
     <where>
       name like #{keyword} and category_id in
       <foreach collection="data" item="data_i" open="(" close=")" separator=",">
-        #{data_i.id}
+        #{data_i}
       </foreach>
     </where>
   </select>
@@ -121,7 +121,7 @@
     <where>
       category_id in
       <foreach collection="data" item="data_i" open="(" close=")" separator=",">
-        #{data_i.id}
+        #{data_i}
       </foreach>
     </where>
   </select>

@@ -28,7 +28,7 @@ public class ShippingController {
     @PostMapping("add.do")
     public ServerResponse add(HttpSession session,Shipping shipping){
 
-        UserInfo userInfo = (UserInfo) session.getAttribute(Const.CURRENTUSER);
+        UserInfo userInfo = (UserInfo) session.getAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc());
         return shippingService.add(userInfo.getId(),shipping);
         /*
         return shippingService.add(1,shipping);

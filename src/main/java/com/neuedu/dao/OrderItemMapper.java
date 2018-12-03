@@ -43,4 +43,10 @@ public interface OrderItemMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(OrderItem record);
+
+    /*根据用户id查商品详情*/
+    List<OrderItem> selectByUID(Integer uid);
+
+    //根据订单号查对应商品详情
+    List<OrderItem> selectByOrderNo(Long oid);
 }

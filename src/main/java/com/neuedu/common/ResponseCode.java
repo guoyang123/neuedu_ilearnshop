@@ -58,13 +58,41 @@ public class ResponseCode {
     /*搜索商品参数错误*/
     public static final int ERROR_PAMAR = 1;
 
-    /*搜索商品不存在*/
+    /*该商品已下架*/
     public static final int NO_PRODUCT = 4;
 
     /*====================购物车相关=========================*/
+    /*参数不能为空*/
+    public static final int EMPTY_PARAM = 9;
+
     /*用户未登录*/
     public  static final int NO_SESSION = 10;
 
     /*购物车是空的*/
     public  static final int EMPTY_CART = 1;
+
+    /*要移除的商品不存在*/
+    public static final int UNEXIST_P = 3;
+
+    /*更新数据失败*/
+    public  static final int FALSE_UPDATE = 2;
+
+    /*====================订单相关=========================*/
+    /*创建订单失败*/
+    public  static final int FALSE_CREAT = 1;
+
+    /*参数不能为空*/
+    public  static final int ORDEREMPTY_PARAM = 9;
+
+    /*还没有选中任何商品*/
+    public  static final int EMPTY_CARTS = 2;
+
+    /*商品库存不足*/
+    public  static final int LACK_PRODUCT = 3;
+
+    /*未查询到订单信息*/
+    public  static final int NO_ORDERMSG = 5;
+
+    /*该订单已付款*/
+    public  static final int ACCOUNT_PAID = 6;
 }

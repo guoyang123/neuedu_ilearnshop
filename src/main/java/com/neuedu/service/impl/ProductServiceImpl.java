@@ -42,7 +42,7 @@ public class ProductServiceImpl implements IProductService{
         if(categoryId != null ){
             //递归获取所有子类
             List data = null;
-            ServerResponse<Category> srCategory = ics.getAllChilds(categoryId);
+            ServerResponse<Category> srCategory = ics.getDeepCategory(categoryId);
             if(srCategory.isSuccess()){
                 data = (List) srCategory.getData();
             }
