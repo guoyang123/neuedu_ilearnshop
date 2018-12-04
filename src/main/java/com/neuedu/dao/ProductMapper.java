@@ -62,7 +62,15 @@ public interface ProductMapper {
     /*categoryId空_keyword非空_查询所有分类包含关键词的商品*/
     List<Product> selectByKeyword(String keyword);//根据关键词查询数据
 
-    /*categoryId空_keyword空_返回空数据*/
+    /*根据商品id查询最新商品*/
+    Product selectByIdAndIs_New(@Param("productId") Integer productId, @Param("is_new")Integer is_new);
+    /*根据商品id查询最热商品*/
+    Product selectByIdAndIs_Hot(@Param("productId") Integer productId, @Param("is_hot")Integer is_hot);
+    /*根据商品id查询banner商品*/
+    Product selectByIdAndIs_Banner(@Param("productId") Integer productId, @Param("is_banner")Integer is_banner);
+
+    /*根据最新或最热或banner查询商品*/
+    List<Product> selectBys_NewAndIs_HotAndIs_Banner(@Param("is_new")Integer is_new,@Param("is_hot")Integer is_hot,@Param("is_banner")Integer is_banner);
 
 
 

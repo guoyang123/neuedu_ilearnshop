@@ -30,8 +30,11 @@ public class ProductController {
 
     /*获取产品detail*/
     @RequestMapping("detail.do")
-    public ServerResponse getDetail(Integer productId){
-        ServerResponse sr = productService.getDetail(productId);
+    public ServerResponse getDetail(Integer productId,
+                                    @RequestParam(required = false,defaultValue="0") Integer is_new,
+                                    @RequestParam(required = false,defaultValue="0") Integer is_hot,
+                                    @RequestParam(required = false,defaultValue="0") Integer is_banner){
+        ServerResponse sr = productService.getDetail(productId,is_new,is_hot,is_banner);
 
         return sr;
     }
