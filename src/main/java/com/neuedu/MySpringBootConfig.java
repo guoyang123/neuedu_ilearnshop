@@ -23,6 +23,7 @@ public class MySpringBootConfig implements WebMvcConfigurer {
      * */
     @Autowired
     PortalAuthorityInterceptor portalAuthorityInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(manageAuthorityInterceptor).addPathPatterns("/manage/**").
@@ -36,4 +37,7 @@ public class MySpringBootConfig implements WebMvcConfigurer {
         registry.addInterceptor(portalAuthorityInterceptor).addPathPatterns("/portal/**").
                 excludePathPatterns(excludeList);
     }
+
+
+
 }

@@ -21,8 +21,13 @@ public class POJOtoVOUtils {
         p.setPrice(product.getPrice());
         p.setStock(product.getStock());
         p.setStatus(product.getStatus());
+        p.setIs_new(product.getIs_new());
+        p.setIs_hot(product.getIs_hot());
+        p.setIs_banner(product.getIs_banner());
         p.setCreateTime(DateUtils.dateToStr(product.getCreateTime()));
         p.setUpdateTime(DateUtils.dateToStr(product.getUpdateTime()));
+        //设置图片服务器
+        p.setImageHost(PropertiesUtils.readByKey("imageHost"));
         return p;
     }
 
@@ -113,7 +118,7 @@ public class POJOtoVOUtils {
         //设置购物信息
         vo.setOrderItemVoList(itemVOList);
         //设置图片服务器
-        vo.setImageHost("暂不配置");
+        vo.setImageHost(PropertiesUtils.readByKey("imageHost"));
         //设置地址id
         vo.setShippingId(order.getShippingId());
         //设置收货人姓名

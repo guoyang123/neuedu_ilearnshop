@@ -30,7 +30,7 @@ public class ResponseCode {
     public static final int EXIST_EMAIL=2;
 
     /*获取用户信息失败状态码：用户未登录*/
-    public static final int NO_LOGIN=1;
+    public static final int NO_LOGIN=10;
 
     /*忘记密码失败状态码：该用户未设置找回密码问题*/
     public static final int NO_QUESTION = 1;

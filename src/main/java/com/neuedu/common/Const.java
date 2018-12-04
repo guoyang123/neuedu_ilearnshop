@@ -26,7 +26,7 @@ public class Const {
         EMPTY_PARAM2(ResponseCode.ERROR,"更新信息不能为空"),
         SUCCESS_USER(ResponseCode.SUCESS,"用户注册成功"),
         SUCCESS_MSG(ResponseCode.SUCESS,"校验成功"),
-        NO_LOGIN(ResponseCode.NO_LOGIN,"用户未登录，无法获取当前用户信息"),
+        NO_LOGIN(ResponseCode.NO_LOGIN,"用户未登录"),
         NO_QUESTION(ResponseCode.NO_QUESTION,"该用户未设置找回密码问题"),
         ERROR_ANSWER(ResponseCode.ERROR_ANSWER,"问题答案错误"),
         LOSE_EFFICACY(ResponseCode.LOSE_EFFICACY,"token已经失效"),

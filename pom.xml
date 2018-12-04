@@ -210,6 +210,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>ilearnshopping</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>

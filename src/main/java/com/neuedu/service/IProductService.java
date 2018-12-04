@@ -16,5 +16,8 @@ public interface IProductService {
                            @RequestParam(required = false,defaultValue = "") String orderBy);
 
     /*获取产品detail*/
-    ServerResponse getDetail(Integer productId);
+    ServerResponse getDetail(Integer productId,
+                             @RequestParam(required = false,defaultValue="0") Integer is_new,
+                             @RequestParam(required = false,defaultValue="0") Integer is_hot,
+                             @RequestParam(required = false,defaultValue="0") Integer is_banner);
 }
