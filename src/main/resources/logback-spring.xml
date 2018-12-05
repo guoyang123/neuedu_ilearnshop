@@ -2,6 +2,7 @@
 
 <configuration>
 
+    <!--配置项,配置控制台输出-->
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>
@@ -9,7 +10,7 @@
             </pattern>
         </layout>
     </appender>
-
+    <!--配置文件输出-->
     <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -21,7 +22,7 @@
                 %msg%n
             </pattern>
         </encoder>
-        <!--滚动策略-->
+        <!--滚动策略，每天一个日志文件-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
             <fileNamePattern>/var/log/ilearn/info.%d.log</fileNamePattern>
@@ -46,10 +47,12 @@
         </rollingPolicy>
     </appender>
 
+    <!--root-整个项目都适用-->
     <root level="info">
         <appender-ref ref="consoleLog" />
         <appender-ref ref="fileInfoLog" />
         <appender-ref ref="fileErrorLog" />
     </root>
+
 
 </configuration>
