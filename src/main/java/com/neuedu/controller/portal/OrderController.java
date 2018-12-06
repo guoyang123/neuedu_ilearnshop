@@ -59,14 +59,13 @@ public class OrderController {
         return sr;
     }
 
-    Logger logger=LoggerFactory.getLogger(OrderController.class);
     /*取消订单*/
     @RequestMapping("cancel.do")
     public ServerResponse cancelOrder(HttpSession session, Long orderNo) {
         //判断登录状态
         ServerResponse sr = orderService.cancelOrder(session, orderNo);
         if(sr.isSuccess()){//订单取消成功
-
+           orderService.recordOrderCancelLog(orderNo);
         }
         return sr;
     }
