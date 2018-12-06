@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.neuedu.common.Const;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.dao.*;
+import com.neuedu.log.NeueduAnalyticsEngineSDK;
 import com.neuedu.pojo.*;
 import com.neuedu.pojo.vo.CartOrderItemVO;
 import com.neuedu.pojo.vo.OrderItemVO;
@@ -16,9 +17,13 @@ import com.neuedu.service.IOrderService;
 import com.neuedu.util.BigDecimalUtils;
 import com.neuedu.util.OpinionUtils;
 import com.neuedu.util.POJOtoVOUtils;
+
 import com.neuedu.util.PropertiesUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -380,10 +385,29 @@ public class OrderServiceImpl implements IOrderService {
         return sr;
     }
 
+
     @Override
     public ServerResponse aliPay(HttpSession session, Long orderNo) {
         return null;
     }
 
+
+    /**
+     * 配置取消订单日志记录
+     * */
+    Logger logger=LoggerFactory.getLogger(OrderServiceImpl.class);
+    @Autowired
+    UserInfoMapper userInfoMapper;
+    public void recordOrderCancelLog(Long orderno){
+        Order order=orderMapper.selectByPrimaryKey(orderno);
+        UserInfo userInfo=userInfoMapper.selectByPrimaryKey(order.getUserId());
+        String userIp=userInfo.getUserIp()!=null?userInfo.getUserIp():"0.0.0.0";
+
+        String info=NeueduAnalyticsEngineSDK.recordCancelOrderLog(userIp,String.valueOf(orderno),
+                String.valueOf(userInfo.getId()),
+                String.valueOf(order.getCreateTime().getTime()),
+                System.currentTimeMillis()+"");
+        logger.info(info);
+    }
 
 }

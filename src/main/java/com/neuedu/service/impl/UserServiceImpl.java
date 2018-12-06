@@ -329,4 +329,10 @@ public class UserServiceImpl implements IUserService {
         return sr;
     }
 
+    @Override
+    public void updateUserIp(UserInfo userInfo) {
+
+        userInfoMapper.updateByPrimaryKey(userInfo);
+    }
+
 }

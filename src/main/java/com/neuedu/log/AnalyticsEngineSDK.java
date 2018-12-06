@@ -18,7 +18,7 @@ public class AnalyticsEngineSDK {
 	// 日志打印对象
 	private static final Logger log = Logger.getGlobal();
 	// 请求url的主体部分  -->订单确认页
-	public static final String accessUrl = "http://hadoop01/log.gif";
+	public static final String accessUrl = "http://business.top:8089/portal/order/create.do";
 	private static final String platformName = "java_server";
 	private static final String sdkName = "jdk";
 	private static final String version = "1";
