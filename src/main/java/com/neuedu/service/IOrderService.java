@@ -27,4 +27,6 @@ public interface IOrderService {
     /*==================支付宝支付模块=======================*/
     /*支付*/
     ServerResponse aliPay(HttpSession session, Long orderNo);
+     /**记录日志*/
+     void recordOrderCancelLog(Long orderno);
 }

@@ -125,10 +125,13 @@ public class POJOtoVOUtils {
         vo.setImageHost(PropertiesUtils.readByKey("imageHost"));
         //设置地址id
         vo.setShippingId(order.getShippingId());
-        //设置收货人姓名
-        vo.setReceiverName(shipping.getReceiverName());
-        //设置收货对象
-        vo.setShippingVO(getNew(shipping));
+        if(shipping!=null){
+            //设置收货人姓名
+            vo.setReceiverName(shipping.getReceiverName());
+            //设置收货对象
+            vo.setShippingVO(getNew(shipping));
+        }
+
 
         return vo;
     }
@@ -136,6 +139,9 @@ public class POJOtoVOUtils {
     /*shipping to shippingVO*/
     public static ShippingVO getNew(Shipping shipping){
         ShippingVO shippingVO = new ShippingVO();
+        if(shipping==null){
+            return shippingVO;
+        }
         shippingVO.setReceiverName(shipping.getReceiverName());
         shippingVO.setReceiverPhone(shipping.getReceiverPhone());
         shippingVO.setReceiverMobile(shipping.getReceiverMobile());

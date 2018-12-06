@@ -48,9 +48,7 @@
     -->
     update neuedu_user
     set
-      <if test="password!=null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
+
     <if test="email!=null">
       email = #{email,jdbcType=VARCHAR},
     </if>
