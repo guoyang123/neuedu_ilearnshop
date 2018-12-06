@@ -82,11 +82,11 @@ public class POJOtoVOUtils {
         vo.setPayment(order.getPayment());
         vo.setPayment_type(order.getPaymentType());
         //线上支付
-        if(order.getStatus() == 1){
+        if(order.getPaymentType() == 1){
             vo.setPaymentTypeDesc(Const.PaymentEnum.ONLINE.getDesc());
         }
 
-        if(order.getStatus() == 2){
+        if(order.getPaymentType() == 2){
             vo.setPaymentTypeDesc(Const.PaymentEnum.OUTLINE.getDesc());
         }
         vo.setPostage(order.getPostage());
@@ -111,10 +111,14 @@ public class POJOtoVOUtils {
             vo.setStatusDesc(Const.OrderStatusEnum.ORDER_CLOSED.getDesc());
         }
 
-        vo.setPaymentTime(DateUtils.dateToStr(order.getPaymentTime()));
-        vo.setSendTime(DateUtils.dateToStr(order.getSendTime()));
-        vo.setEndTime(DateUtils.dateToStr(order.getEndTime()));
-        vo.setCloseTime(DateUtils.dateToStr(order.getCloseTime()));
+        vo.setPaymentTime("");
+        vo.setSendTime("");
+        vo.setEndTime("");
+        vo.setCloseTime("");
+        //设置创建时间
+        vo.setCreateTime(DateUtils.dateToStr(order.getCreateTime()));
+        //设置更新时间
+        vo.setUpdateTime(DateUtils.dateToStr(order.getUpdateTime()));
         //设置购物信息
         vo.setOrderItemVoList(itemVOList);
         //设置图片服务器
@@ -123,6 +127,8 @@ public class POJOtoVOUtils {
         vo.setShippingId(order.getShippingId());
         //设置收货人姓名
         vo.setReceiverName(shipping.getReceiverName());
+        //设置收货对象
+        vo.setShippingVO(getNew(shipping));
 
         return vo;
     }

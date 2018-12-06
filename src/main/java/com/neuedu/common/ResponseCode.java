@@ -95,4 +95,10 @@ public class ResponseCode {
 
     /*该订单已付款*/
     public  static final int ACCOUNT_PAID = 6;
+
+    /*要支付的订单不存在*/
+    public  static final int NO_PAYORDER= 7;
+
+    /*要支付的订单不合法*/
+    public  static final int BAD_PAYORDER= 7;
 }

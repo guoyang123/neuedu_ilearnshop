@@ -18,6 +18,7 @@ public class OrderVO {
     private String endTime;
     private String closeTime;
     private String createTime;
+    private String updateTime;
     private List<OrderItemVO> orderItemVoList;
 
     //图片服务器
@@ -27,6 +28,14 @@ public class OrderVO {
     //用户地址
     private Integer shippingId;
     private ShippingVO shippingVO;
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getPaymentTypeDesc() {
         return paymentTypeDesc;

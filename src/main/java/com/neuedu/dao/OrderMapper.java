@@ -45,4 +45,7 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     List<Order> selectByUID(Integer uid);
+
+    /*按订单编号查找订单*/
+    Order selectByOrderNo(Long orderNo);
 }

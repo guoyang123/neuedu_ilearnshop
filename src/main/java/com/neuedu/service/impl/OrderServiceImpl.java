@@ -1,5 +1,8 @@
 package com.neuedu.service.impl;
 
+import com.alipay.api.domain.ExtendParams;
+import com.alipay.api.domain.GoodsDetail;
+import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neuedu.common.Const;
@@ -13,6 +16,9 @@ import com.neuedu.service.IOrderService;
 import com.neuedu.util.BigDecimalUtils;
 import com.neuedu.util.OpinionUtils;
 import com.neuedu.util.POJOtoVOUtils;
+import com.neuedu.util.PropertiesUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +26,6 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
@@ -246,7 +251,7 @@ public class OrderServiceImpl implements IOrderService {
         //赋值
         coi.setOrderItemVoList(orderItemVoList);
         coi.setProductTotalPrice(orderTotalPrice);
-        coi.setImageHost("暂时不设置");
+        coi.setImageHost(PropertiesUtils.readByKey("imageHost"));
 
         sr = ServerResponse.createServerResponseBySuccess(coi);
         return sr;
@@ -305,8 +310,8 @@ public class OrderServiceImpl implements IOrderService {
         if(sr != null){
             return sr;
         }
-        //
-        Order order = orderMapper.selectByPrimaryKey(orderNo);
+        //根据订单号查找订单
+        Order order = orderMapper.selectByOrderNo(orderNo);
         //判断是否有订单
         if(order == null){
             sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.NO_ORDERMSG.getCode(),Const.OrderStatusEnum.NO_ORDERMSG.getDesc());
@@ -342,7 +347,7 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         //改变订单状态
-        Order order = orderMapper.selectByPrimaryKey(orderNo);
+        Order order = orderMapper.selectByOrderNo(orderNo);
         //非空判断
         if(order == null){
             //订单不存在
@@ -374,4 +379,11 @@ public class OrderServiceImpl implements IOrderService {
         sr = ServerResponse.createServerResponseBySuccess("订单取消成功");
         return sr;
     }
+
+    @Override
+    public ServerResponse aliPay(HttpSession session, Long orderNo) {
+        return null;
+    }
+
+
 }
