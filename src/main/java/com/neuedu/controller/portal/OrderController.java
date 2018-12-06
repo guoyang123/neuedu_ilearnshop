@@ -65,4 +65,14 @@ public class OrderController {
         return sr;
     }
 
+    /*支付宝支付模块*/
+    /*支付*/
+    @RequestMapping("pay.do")
+    public ServerResponse aliPay(HttpSession session, Long orderNo) {
+        //判断登录状态
+        ServerResponse sr = orderService.aliPay(session,orderNo);
+
+        return sr;
+    }
+
 }

@@ -179,7 +179,9 @@ public class Const {
         EMPTY_CARTS(ResponseCode.EMPTY_CARTS,"还没有选中任何商品"),
         LACK_PRODUCT(ResponseCode.LACK_PRODUCT,"商品库存不足"),
         NO_ORDERMSG(ResponseCode.NO_ORDERMSG,"未查询到订单信息"),
-        ACCOUNT_PAID(ResponseCode.ACCOUNT_PAID,"订单不可取消")
+        ACCOUNT_PAID(ResponseCode.ACCOUNT_PAID,"订单不可取消"),
+        NO_PAYORDER(ResponseCode.NO_PAYORDER,"要支付的订单不存在"),
+        BAD_PAYORDER(ResponseCode.BAD_PAYORDER,"要支付的订单不合法")
 
         ;
         private  int  code;
