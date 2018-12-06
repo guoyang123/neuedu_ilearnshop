@@ -47,12 +47,75 @@
         </rollingPolicy>
     </appender>
 
+
+    <!--bigdata log -->
+
+
+
+
+
+
+
+    <appender name="orderLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/Users/guoyang/Desktop/bigdatalog/order.%d.log</file>
+        <!-- 过滤器，只记录INFO级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <encoder
+                class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <!-- 日志输出编码 -->
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+                <pattern> %msg%n
+                </pattern>
+            </layout>
+        </encoder>
+
+
+
+        <!--滚动策略，每天一个日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%d.log</fileNamePattern>
+            <!-- 日志最大的历史 10天 -->
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+
+
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy" >-->
+            <!--<FileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%i.log</FileNamePattern>-->
+            <!--<minIndex>1</minIndex>-->
+            <!--<maxIndex>10</maxIndex>-->
+        <!--</rollingPolicy>-->
+        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+            <!--<maxFileSize>10MB</maxFileSize>-->
+        <!--</triggeringPolicy>-->
+
+    </appender>
+
+
+
+    <!--additivity="false" -->
+    <logger name="com.neuedu.service.impl.OrderServiceImpl"
+            level="info">
+        <appender-ref ref="orderLog"/>
+    </logger>
+
+    <!--bigdata log end-->
+
+
     <!--root-整个项目都适用-->
-    <root level="info">
+    <root name="com.neuedu.controller.portal.UserController" level="info">
         <appender-ref ref="consoleLog" />
         <appender-ref ref="fileInfoLog" />
         <appender-ref ref="fileErrorLog" />
     </root>
+
+
 
 
 </configuration>

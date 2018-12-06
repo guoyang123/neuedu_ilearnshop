@@ -23,6 +23,7 @@ create table neuedu_user(
  UNIQUE KEY `user_name_unique` (`username`) USING BTREE
 )ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
+alter table neuedu_user add column ip varchar(20) default  '';
 
 # 类别表
 create table neuedu_category(
