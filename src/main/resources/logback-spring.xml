@@ -79,8 +79,8 @@
 
         <!--滚动策略，每天一个日志文件-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--路径-->
-            <fileNamePattern>/neuedu/bigdatalog/order.%d.log</fileNamePattern>
+            <!--路径 /neuedu/bigdatalog-->
+            <fileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%d.log</fileNamePattern>
             <!-- 日志最大的历史 10天 -->
             <maxHistory>10</maxHistory>
         </rollingPolicy>
