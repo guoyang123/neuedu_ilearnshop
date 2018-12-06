@@ -399,7 +399,7 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     UserInfoMapper userInfoMapper;
     public void recordOrderCancelLog(Long orderno){
-        Order order=orderMapper.selectByPrimaryKey(orderno);
+        Order order=orderMapper.selectByOrderNo(orderno);
         UserInfo userInfo=userInfoMapper.selectByPrimaryKey(order.getUserId());
         String userIp=userInfo.getUserIp()!=null?userInfo.getUserIp():"0.0.0.0";
 

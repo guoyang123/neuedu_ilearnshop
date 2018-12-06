@@ -57,7 +57,7 @@
 
 
     <appender name="orderLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/guoyang/Desktop/bigdatalog/order.%d.log</file>
+
         <!-- 过滤器，只记录INFO级别的日志 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -80,7 +80,7 @@
         <!--滚动策略，每天一个日志文件-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
-            <fileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%d.log</fileNamePattern>
+            <fileNamePattern>/neuedu/bigdatalog/order.%d.log</fileNamePattern>
             <!-- 日志最大的历史 10天 -->
             <maxHistory>10</maxHistory>
         </rollingPolicy>
