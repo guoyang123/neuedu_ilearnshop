@@ -10,12 +10,14 @@
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="ip" property="userIp" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="question" property="question" jdbcType="VARCHAR" />
     <result column="answer" property="answer" jdbcType="VARCHAR" />
     <result column="role" property="role" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     <!--
@@ -53,7 +55,8 @@
       answer = #{answer,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      ip=#{userIp},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--根据用户名修改密码-->

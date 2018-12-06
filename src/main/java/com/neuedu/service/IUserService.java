@@ -45,4 +45,9 @@ public interface IUserService {
 
     /*退出登录*/
     ServerResponse logout(HttpSession session);
+
+    /**
+     * 修改用户信息
+     * */
+    void updateUserIp(UserInfo userInfo);
 }

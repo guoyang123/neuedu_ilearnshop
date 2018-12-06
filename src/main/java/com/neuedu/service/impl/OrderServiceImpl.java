@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import com.neuedu.common.Const;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.dao.*;
+import com.neuedu.log.NeueduAnalyticsEngineSDK;
 import com.neuedu.pojo.*;
 import com.neuedu.pojo.pay.Configs;
 import com.neuedu.pojo.pay.ZxingUtils;
@@ -17,7 +18,19 @@ import com.neuedu.pojo.vo.CartOrderItemVO;
 import com.neuedu.pojo.vo.OrderItemVO;
 import com.neuedu.pojo.vo.OrderVO;
 import com.neuedu.service.IOrderService;
+
 import com.neuedu.util.*;
+import com.neuedu.util.BigDecimalUtils;
+import com.neuedu.util.OpinionUtils;
+import com.neuedu.util.POJOtoVOUtils;
+
+import com.neuedu.util.PropertiesUtils;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +54,7 @@ public class OrderServiceImpl implements IOrderService {
     private CategoryMapper categoryMapper;
     @Autowired
     private ShippingMapper shippingMapper;
-
+    
     /*参数非空校验*/
     private ServerResponse emptyParam(Integer shippingId) {
         ServerResponse sr = null;
@@ -58,13 +71,13 @@ public class OrderServiceImpl implements IOrderService {
         }
         return sr;
     }
-
+    
     /*创建订单ID*/
     private Long getOrderNo() {
         Long aLong = System.currentTimeMillis();
         return aLong;
     }
-
+    
     /*创建一个订单类*/
     private Order getNewOrder(Integer uid, Integer shippingId, BigDecimal orderTotalPrice, Long orderNo) {
         Order order = new Order();
@@ -76,7 +89,7 @@ public class OrderServiceImpl implements IOrderService {
         order.setPaymentType(Const.PaymentEnum.ONLINE.getCode());
         order.setPostage(0);
         order.setStatus(Const.OrderStatusEnum.ORDER_UN_PAY.getCode());
-
+    
         //保存订单
         int insert = orderMapper.insert(order);
         if (insert > 0) {
@@ -84,7 +97,7 @@ public class OrderServiceImpl implements IOrderService {
         }
         return null;
     }
-
+    
     /*创建一个订单详情类*/
     private OrderItem getNewOrderItem(Integer uid, Cart cart, Long orderNo, Product product) {
         OrderItem orderItem = new OrderItem();
@@ -96,35 +109,35 @@ public class OrderServiceImpl implements IOrderService {
         orderItem.setCurrentUnitPrice(product.getPrice());
         orderItem.setQuantity(cart.getQuantity());
         orderItem.setTotalPrice(BigDecimalUtils.mul(orderItem.getQuantity().doubleValue(), orderItem.getCurrentUnitPrice().doubleValue()));
-
+    
         return orderItem;
     }
-
+    
     /*生成订单详情*/
-
+    
     /*创建订单:就是创建一个订单类*/
     @Override
     public ServerResponse createNew(HttpSession session, Integer shippingId) {
         ServerResponse sr = null;
-
+    
         //参数非空校验
         sr = emptyParam(shippingId);
         if(sr != null){
             return sr;
         }
-
+    
         //获取登陆用户id
         Integer uid = OpinionUtils.getUID(session);
-
+    
         //创建订单ID
         Long orderNo = getOrderNo();
-
+    
         //创建订单详情list
         List<OrderItemVO> orderItemVoList = new ArrayList<>();
-
+    
         //查询该用户购物车中已选中商品
         List<Cart> liCarts = cartMapper.selectByUidAndCheckIn(uid);
-
+    
         //创建订单总价
         BigDecimal orderTotalPrice = new BigDecimal(0);
 
@@ -138,17 +151,17 @@ public class OrderServiceImpl implements IOrderService {
         for (Cart liCart : liCarts) {
             //查看购物信息对应的商品是否存在
             Product product = productMapper.selectByPrimaryKey(liCart.getProductId());
-
+    
             //购物信息转换成订单详情
             OrderItem newOrderItem = getNewOrderItem(uid, liCart, orderNo, product);
-
+    
             //计算订单总价
             orderTotalPrice = BigDecimalUtils.add(orderTotalPrice.doubleValue(), newOrderItem.getTotalPrice().doubleValue());
         }
-
+    
         //创建订单并保存至数据库中
         Order newOrder = getNewOrder(uid, shippingId, orderTotalPrice, orderNo);
-
+    
         //创建订单成功后，才保存订单详情，扣除库存，清空购物车
         if(newOrder != null){
             for (Cart liCart : liCarts) {
@@ -164,64 +177,64 @@ public class OrderServiceImpl implements IOrderService {
                     sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.LACK_PRODUCT.getCode(), Const.OrderStatusEnum.LACK_PRODUCT.getDesc());
                     return sr;
                 }
-
+    
                 //购物信息转换成订单详情
                 OrderItem newOrderItem = getNewOrderItem(uid, liCart, orderNo, product);
-
+    
                 //计算订单总价
                 orderTotalPrice = BigDecimalUtils.add(orderTotalPrice.doubleValue(), newOrderItem.getTotalPrice().doubleValue());
-
+    
                 //转换成商品详情VO类
                 OrderItemVO aNew = POJOtoVOUtils.getNew(newOrderItem);
-
+    
                 //放到集合中
                 orderItemVoList.add(aNew);
-
+    
                 //将订单详情保存到数据库中
                 int insert = orderItemMapper.insert(newOrderItem);
-
+    
                 //扣除对应商品库存,更新商品库存
                 product.setStock(product.getStock() - liCart.getQuantity());
                 int i = productMapper.updateByPrimaryKey(product);
-
+    
                 //清空购物车中已经下单的商品
                 int is = cartMapper.deleteByPrimaryKey(liCart.getId());
             }
-
+    
             //获取地址
             Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
-
+    
             //创建orderVO类
             OrderVO aNewOrderVO = POJOtoVOUtils.getNew(newOrder, orderItemVoList, shipping);
             //设置订单VO类中的地址VO类
             aNewOrderVO.setShippingVO(POJOtoVOUtils.getNew(shippingMapper.selectByPrimaryKey(shippingId)));
-
+    
             //返回数据
             sr = ServerResponse.createServerResponseBySuccess(aNewOrderVO);
-
+    
         }else{
             sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.FALSE_CREAT.getCode(),Const.OrderStatusEnum.FALSE_CREAT.getDesc());
         }
         return sr;
     }
-
+    
     /*获取购物车中的商品信息转换订单*/
     @Override
     public ServerResponse getOrderCartProduct(HttpSession session) {
         ServerResponse sr = null;
-
+    
         //获取登陆用户id
         Integer uid = OpinionUtils.getUID(session);
-
+    
         //查询该用户购物车中已选中商品
         List<Cart> liCarts = cartMapper.selectByUidAndCheckIn(uid);
-
+    
         //创建订单总价
         BigDecimal orderTotalPrice = new BigDecimal(0);
-
+    
         //创建订单详情list
         List<OrderItemVO> orderItemVoList = new ArrayList<>();
-
+    
         //判断购物信息是否存在
         if (liCarts == null || liCarts.size() < 1) {
             sr = ServerResponse.createServerResponseByError(Const.CartCheckedEnum.EMPTY_CART.getCode(),Const.CartCheckedEnum.EMPTY_CART.getDesc());
@@ -230,46 +243,46 @@ public class OrderServiceImpl implements IOrderService {
         for (Cart liCart : liCarts) {
             //查看购物信息对应的商品是否存在
             Product product = productMapper.selectByPrimaryKey(liCart.getProductId());
-
+    
             //购物信息转换成订单详情
             OrderItem newOrderItem = getNewOrderItem(uid, liCart, null, product);
-
+    
             //计算订单总价
             orderTotalPrice = BigDecimalUtils.add(orderTotalPrice.doubleValue(), newOrderItem.getTotalPrice().doubleValue());
-
+    
             //转换成商品详情VO类
             OrderItemVO aNew = POJOtoVOUtils.getNew(newOrderItem);
-
+    
             //放到集合中
             orderItemVoList.add(aNew);
         }
-
+    
             //创建转换类
         CartOrderItemVO coi = new CartOrderItemVO();
-
+    
         //赋值
         coi.setOrderItemVoList(orderItemVoList);
         coi.setProductTotalPrice(orderTotalPrice);
         coi.setImageHost(PropertiesUtils.readByKey("imageHost"));
-
+    
         sr = ServerResponse.createServerResponseBySuccess(coi);
         return sr;
     }
-
+    
     /*订单List*/
     @Override
     public ServerResponse getlist(HttpSession session, Integer pageSize, Integer pageNum) {
         ServerResponse sr = null;
-
+    
         //设置分页插件
         PageHelper.startPage(pageNum,pageSize);
-
+    
         //设置orderVoList
         List<OrderVO> voList = new ArrayList<OrderVO>();
-
+    
         //获取用户对应订单
         List<Order> orders = orderMapper.selectByUID(OpinionUtils.getUID(session));
-
+    
         //判断是否有订单
         if(orders == null ||orders.size()<1){
             sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.NO_ORDERMSG.getCode(),Const.OrderStatusEnum.NO_ORDERMSG.getDesc());
@@ -292,18 +305,18 @@ public class OrderServiceImpl implements IOrderService {
             //放入集合中
             voList.add(orderVO);
         }
-
+    
         //分页处理
         PageInfo pageInfo = new PageInfo(voList);
         sr = ServerResponse.createServerResponseBySuccess(pageInfo);
         return sr;
     }
-
+    
     /*订单详情detail*/
     @Override
     public ServerResponse getDetail(HttpSession session, Long orderNo) {
         ServerResponse sr = null;
-
+    
         //非空校验
         sr = emptyParam(orderNo);
         if(sr != null){
@@ -329,12 +342,12 @@ public class OrderServiceImpl implements IOrderService {
         Shipping shipping = shippingMapper.selectByPrimaryKey(order.getShippingId());
         //封装orderVo
         OrderVO orderVO = POJOtoVOUtils.getNew(order, orderItemVOList, shipping);
-
+    
         //
         sr = ServerResponse.createServerResponseBySuccess(orderVO);
         return sr;
     }
-
+    
     /*取消订单*/
     @Override
     public ServerResponse cancelOrder(HttpSession session, Long orderNo) {
@@ -344,7 +357,7 @@ public class OrderServiceImpl implements IOrderService {
         if(sr != null){
             return sr;
         }
-
+    
         //改变订单状态
         Order order = orderMapper.selectByOrderNo(orderNo);
         //非空判断
@@ -359,25 +372,26 @@ public class OrderServiceImpl implements IOrderService {
             sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.ACCOUNT_PAID.getCode(),Const.OrderStatusEnum.ACCOUNT_PAID.getDesc());
             return sr;
         }
-
+    
         //修改订单状态
         order.setStatus(0);
         int i = orderMapper.updateByPrimaryKey(order);
-
+    
         //根据订单号查对应商品详情
         List<OrderItem> orderItems = orderItemMapper.selectByOrderNo(order.getOrderNo());
-
+    
         //恢复商品库存
         for (OrderItem item : orderItems) {
             Product product = productMapper.selectByPrimaryKey(item.getProductId());
-
+    
             product.setStock(product.getStock()+item.getQuantity());
             int ins = productMapper.updateByPrimaryKey(product);
         }
-
+    
         sr = ServerResponse.createServerResponseBySuccess("订单取消成功");
         return sr;
     }
+
 
 
 
@@ -389,7 +403,7 @@ public class OrderServiceImpl implements IOrderService {
             sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.ORDEREMPTY_PARAM.getCode(),Const.OrderStatusEnum.ORDEREMPTY_PARAM.getDesc());
             return sr;
         }
-
+    
         //判断订单是否存在
         Order order = orderMapper.selectByOrderNo(orderNo);
         if(order == null){
@@ -400,10 +414,10 @@ public class OrderServiceImpl implements IOrderService {
             sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.BAD_PAYORDER.getCode(),Const.OrderStatusEnum.BAD_PAYORDER.getDesc());
             return sr;
         }
-
+    
         //根据订单号查对应商品详情
         List<OrderItem> orderItems = orderItemMapper.selectByOrderNo(order.getOrderNo());
-
+    
         //调用支付宝接口获取支付二维码
         try {
             //使用封装方法获得预下单成功后返回的二维码信息串
@@ -419,7 +433,7 @@ public class OrderServiceImpl implements IOrderService {
                 String filePath = String.format("D:/payimages/qr-%s.png",
                         response.getOutTradeNo());
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
-
+    
                 //预下单成功返回信息
                 sr = ServerResponse.createServerResponseBySuccess(filePath);
                 return sr;
@@ -434,14 +448,10 @@ public class OrderServiceImpl implements IOrderService {
             sr = ServerResponse.createServerResponseByError(Const.PaymentPlatformEnum.ALIPAY_FALSE.getCode(),Const.PaymentPlatformEnum.ALIPAY_FALSE.getDesc());
             return sr;
         }
-
+    
         //支付成功，修改订单状态、支付时间、最后一次更新时间，并返回成功信息
         //支付失败，不做修改，返回失败信息
     }
-
-
-
-
 
     // 测试当面付2.0生成支付二维码
     private AlipayTradePrecreateResponse test_trade_precreate(Order order,List<OrderItem> orderItems) throws AlipayApiException {
@@ -452,22 +462,37 @@ public class OrderServiceImpl implements IOrderService {
         AlipayClient alipayClient = new DefaultAlipayClient(Configs.getOpenApiDomain(),
                 Configs.getAppid(),Configs.getPrivateKey(),"json","utf-8",
                 Configs.getAlipayPublicKey(),Configs.getSignType());
-
+    
         //创建API对应的request类
         AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
-
+    
         //获取一个BizContent对象,并转换成json格式
         request.setBizContent(JsonUtils.obj2String(POJOtoVOUtils.getBizContent(order,orderItems)));
-
+    
         //获取响应,这里要处理一下异常
         AlipayTradePrecreateResponse response = alipayClient.execute(request);
-
+    
         //返回响应的结果
         return response;
     }
+    
 
-
-
-
+    /**
+     * 配置取消订单日志记录
+     * */
+    Logger logger=LoggerFactory.getLogger(OrderServiceImpl.class);
+    @Autowired
+    UserInfoMapper userInfoMapper;
+    public void recordOrderCancelLog(Long orderno){
+        Order order=orderMapper.selectByOrderNo(orderno);
+        UserInfo userInfo=userInfoMapper.selectByPrimaryKey(order.getUserId());
+        String userIp=userInfo.getUserIp()!=null?userInfo.getUserIp():"0.0.0.0";
+    
+        String info=NeueduAnalyticsEngineSDK.recordCancelOrderLog(userIp,String.valueOf(orderno),
+                String.valueOf(userInfo.getId()),
+                String.valueOf(order.getCreateTime().getTime()),
+                System.currentTimeMillis()+"");
+        logger.info(info);
+    }
 
 }
