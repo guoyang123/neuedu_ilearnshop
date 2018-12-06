@@ -1,7 +1,9 @@
 package com.neuedu.service.impl;
 
-import com.alipay.api.domain.ExtendParams;
-import com.alipay.api.domain.GoodsDetail;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,16 +11,13 @@ import com.neuedu.common.Const;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.dao.*;
 import com.neuedu.pojo.*;
+import com.neuedu.pojo.pay.Configs;
+import com.neuedu.pojo.pay.ZxingUtils;
 import com.neuedu.pojo.vo.CartOrderItemVO;
 import com.neuedu.pojo.vo.OrderItemVO;
 import com.neuedu.pojo.vo.OrderVO;
 import com.neuedu.service.IOrderService;
-import com.neuedu.util.BigDecimalUtils;
-import com.neuedu.util.OpinionUtils;
-import com.neuedu.util.POJOtoVOUtils;
-import com.neuedu.util.PropertiesUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.neuedu.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -380,10 +379,95 @@ public class OrderServiceImpl implements IOrderService {
         return sr;
     }
 
-    @Override
-    public ServerResponse aliPay(HttpSession session, Long orderNo) {
-        return null;
+
+
+    /*==========================支付宝支付模块================================*/
+    public ServerResponse aliPay(HttpSession session, Long orderNo){
+        ServerResponse sr = null;
+        //参数非空判断
+        if(orderNo == null){
+            sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.ORDEREMPTY_PARAM.getCode(),Const.OrderStatusEnum.ORDEREMPTY_PARAM.getDesc());
+            return sr;
+        }
+
+        //判断订单是否存在
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if(order == null){
+            sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.NO_PAYORDER.getCode(),Const.OrderStatusEnum.NO_PAYORDER.getDesc());
+            return sr;
+        }else if(order.getUserId() != OpinionUtils.getUID(session)){
+            //判断是否是该用户订单
+            sr = ServerResponse.createServerResponseByError(Const.OrderStatusEnum.BAD_PAYORDER.getCode(),Const.OrderStatusEnum.BAD_PAYORDER.getDesc());
+            return sr;
+        }
+
+        //根据订单号查对应商品详情
+        List<OrderItem> orderItems = orderItemMapper.selectByOrderNo(order.getOrderNo());
+
+        //调用支付宝接口获取支付二维码
+        try {
+            //使用封装方法获得预下单成功后返回的二维码信息串
+            AlipayTradePrecreateResponse response = test_trade_precreate(order, orderItems);
+
+//            String basePath = request.getSession().getServletContext().getRealPath("/");
+//            String fileName = String.format("images%sqr-%s.png", File.separator, response.getOutTradeNo());
+//            String filePath = new StringBuilder(basePath).append(fileName).toString();
+
+            //成功执行下一步
+            if(response.isSuccess()){
+                // 将二维码信息串生成图片，并保存，（需要修改为运行机器上的路径）
+                String filePath = String.format("D:/payimages/qr-%s.png",
+                        response.getOutTradeNo());
+                ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
+
+                //预下单成功返回信息
+                sr = ServerResponse.createServerResponseBySuccess(filePath);
+                return sr;
+            }else{
+                //预下单失败
+                sr = ServerResponse.createServerResponseByError(Const.PaymentPlatformEnum.ALIPAY_FALSE.getCode(),Const.PaymentPlatformEnum.ALIPAY_FALSE.getDesc());
+                return sr;
+            }
+        } catch (AlipayApiException e) {
+            //出现异常，预下单失败
+            e.printStackTrace();
+            sr = ServerResponse.createServerResponseByError(Const.PaymentPlatformEnum.ALIPAY_FALSE.getCode(),Const.PaymentPlatformEnum.ALIPAY_FALSE.getDesc());
+            return sr;
+        }
+
+        //支付成功，修改订单状态、支付时间、最后一次更新时间，并返回成功信息
+        //支付失败，不做修改，返回失败信息
     }
+
+
+
+
+
+    // 测试当面付2.0生成支付二维码
+    private AlipayTradePrecreateResponse test_trade_precreate(Order order,List<OrderItem> orderItems) throws AlipayApiException {
+        Configs.init("zfbinfo.properties");
+
+
+        //实例化客户端
+        AlipayClient alipayClient = new DefaultAlipayClient(Configs.getOpenApiDomain(),
+                Configs.getAppid(),Configs.getPrivateKey(),"json","utf-8",
+                Configs.getAlipayPublicKey(),Configs.getSignType());
+
+        //创建API对应的request类
+        AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
+
+        //获取一个BizContent对象,并转换成json格式
+        request.setBizContent(JsonUtils.obj2String(POJOtoVOUtils.getBizContent(order,orderItems)));
+
+        //获取响应,这里要处理一下异常
+        AlipayTradePrecreateResponse response = alipayClient.execute(request);
+
+        //返回响应的结果
+        return response;
+    }
+
+
+
 
 
 }

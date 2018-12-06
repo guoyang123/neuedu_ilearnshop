@@ -31,11 +31,8 @@ public class UserController {
     /*前台用户登录：登录成功添加session*/
     @RequestMapping("login.do")
     public ServerResponse<UserInfo> userLogin(HttpSession session,String username, String password){
-        ServerResponse<UserInfo> sr = userService.selectByUserName(username,password);
-        //判断状态码为0，创建session
-        if(sr.isSuccess() && sr != null){
-            session.setAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc(),sr.getData());
-        }
+        ServerResponse<UserInfo> sr = userService.selectByUserName(session,username,password);
+
         //返回数据
         return sr;
     }

@@ -101,4 +101,8 @@ public class ResponseCode {
 
     /*要支付的订单不合法*/
     public  static final int BAD_PAYORDER= 7;
+
+    /*======================支付宝支付相关=================*/
+    /*支付宝预下单失败*/
+    public  static final int ALIPAY_FALSE= 301;
 }

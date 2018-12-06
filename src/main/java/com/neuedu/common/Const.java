@@ -261,7 +261,8 @@ public class Const {
 
     public  enum PaymentPlatformEnum{
 
-        ALIPAY(1,"支付宝")
+        ALIPAY(1,"支付宝"),
+        ALIPAY_FALSE(301,"支付宝预下单失败")
         ;
         private  int  code;
         private String desc;

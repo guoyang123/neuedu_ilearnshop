@@ -75,4 +75,20 @@ public class OrderController {
         return sr;
     }
 
+    /*查询订单支付状态*/
+    @RequestMapping("query_order_pay_status.do")
+    public ServerResponse queryOrderPayStatus(HttpSession session, Long orderNo) {
+        //判断登录状态
+        ServerResponse sr = orderService.aliPay(session,orderNo);
+
+        return sr;
+    }
+    /*支付宝回调*/
+    @RequestMapping("alipay_callback.do")
+    public String alipayCallback(HttpSession session, Long orderNo) {
+        //判断登录状态
+        //ServerResponse sr = orderService.aliPay(session,orderNo);
+
+        return "SUCCESS";
+    }
 }
