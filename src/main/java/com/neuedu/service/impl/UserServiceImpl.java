@@ -21,7 +21,7 @@ public class UserServiceImpl implements IUserService {
 
     /*前台用户登录：登录成功添加session*/
     @Override
-    public ServerResponse selectByUserName(String username,String password) {
+    public ServerResponse selectByUserName(HttpSession session,String username,String password) {
         ServerResponse sr = null;
         //判断用户名是否空
         if(username == null || username.equals("")){
@@ -47,8 +47,22 @@ public class UserServiceImpl implements IUserService {
         /* 登录成功 */
         if(ui != null){
             //处理日期
-            ui.setPassword("");//不向前台传送密码
-            sr = ServerResponse.createServerResponseBySuccess(ui);
+            //保存session
+            session.setAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc(),ui);
+
+            //不向前台传送密码
+            UserInfo uo = new UserInfo();
+            uo.setId(ui.getId());
+            uo.setUsername(ui.getUsername());
+            uo.setEmail(ui.getEmail());
+            uo.setPhone(ui.getPhone());
+            uo.setQuestion(ui.getQuestion());
+            uo.setAnswer(ui.getAnswer());
+            uo.setRole(ui.getRole());
+            uo.setCreateTime(ui.getCreateTime());
+            uo.setUpdateTime(ui.getUpdateTime());
+            uo.setPassword("");
+            sr = ServerResponse.createServerResponseBySuccess(uo);
             return sr;
         }
         //登录失败

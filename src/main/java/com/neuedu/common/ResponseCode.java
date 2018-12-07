@@ -100,5 +100,21 @@ public class ResponseCode {
     public  static final int NO_PAYORDER= 7;
 
     /*要支付的订单不合法*/
-    public  static final int BAD_PAYORDER= 7;
+    public  static final int BAD_PAYORDER= 8;
+
+    /*======================支付宝支付相关=================*/
+    /*支付宝预下单失败*/
+    public  static final int ALIPAY_FALSE= 301;
+
+    /*支付宝验签失败*/
+    public  static final int VERIFY_SIGNATURE_FALSE= 302;
+
+    /*不是本商品的订单*/
+    public  static final int VERIFY_ORDER_FALSE= 303;
+
+    /*支付宝重复调用*/
+    public  static final int REPEAT_USEALIPAY= 304;
+
+    /*支付信息保存失败*/
+    public  static final int SAVEPAYMSG_FALSE= 305;
 }

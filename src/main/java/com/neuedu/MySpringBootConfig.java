@@ -33,6 +33,7 @@ public class MySpringBootConfig implements WebMvcConfigurer {
         excludeList.add("/portal/user/login.do");//前台登录
         excludeList.add("/portal/user/register.do");//前台注册
         excludeList.add("/portal/product/**");//商品
+        excludeList.add("/portal/order/alipay_callback.do");//支付宝回调
 
         registry.addInterceptor(portalAuthorityInterceptor).addPathPatterns("/portal/**").
                 excludePathPatterns(excludeList);

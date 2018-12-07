@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
  * */
 public interface IUserService {
     /*前台用户登录：登录成功添加session*/
-    ServerResponse selectByUserName(String username,String password);
+    ServerResponse selectByUserName(HttpSession session,String username,String password);
 
     /*前台用户注册*/
     ServerResponse insertNew(UserInfo ui);
