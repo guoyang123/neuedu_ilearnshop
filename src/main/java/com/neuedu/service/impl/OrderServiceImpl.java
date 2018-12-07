@@ -531,8 +531,8 @@ public class OrderServiceImpl implements IOrderService {
 
         int result= payInfoMapper.insert(payInfo);
         if(result>0){
-            //支付信息保存成功返回结果
-            sr = ServerResponse.createServerResponseBySuccess("支付信息保存成功");
+            //支付信息保存成功返回结果SUCCESS，让支付宝不再回调
+            sr = ServerResponse.createServerResponseBySuccess("SUCCESS");
             return sr;
         }
         //支付信息保存失败返回结果
@@ -540,8 +540,6 @@ public class OrderServiceImpl implements IOrderService {
         return sr;
     }
 
-    //支付成功，修改订单状态、支付时间、最后一次更新时间，并返回成功信息
-    //支付失败，不做修改，返回失败信息
 
     /*查询订单支付状态*/
     @Override

@@ -12,6 +12,7 @@ import com.neuedu.pojo.vo.ProductVO;
 import com.neuedu.service.ICategoryService;
 import com.neuedu.service.IProductService;
 import com.neuedu.util.POJOtoVOUtils;
+import com.neuedu.util.PaiXuUtils;
 import com.neuedu.util.PropertiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public ServerResponse getList(Integer categoryId, String keyword,Integer pageNum, Integer pageSize, String orderBy) {
         ServerResponse sr = null;
+        PageHelper.startPage(pageNum,pageSize);
         List<Product> li = new ArrayList<>();
         List<ProductVO> voList = new ArrayList<>();
 
@@ -62,10 +64,12 @@ public class ProductServiceImpl implements IProductService{
                 //判断当前分类是否为有子类
                 if(data == null || data.size()==0){
                     //没有子类的情况
-                    li = productMapper.selectByCategoryIdAndKeyword(categoryId,keyword);
+                    li = PaiXuUtils.px1(orderBy,pageNum,pageSize,categoryId,keyword,productMapper);
                 }else{
                     //有子类的情况
-                    li = productMapper.selectByCategoryIdAndKeywordAndData(categoryId,keyword,data);
+                    li = PaiXuUtils.px2(orderBy,pageNum,pageSize,categoryId,keyword,productMapper,data);
+
+                    //li = productMapper.selectByCategoryIdAndKeywordAndData(categoryId,keyword,data);
                 }
 
             }
@@ -74,10 +78,14 @@ public class ProductServiceImpl implements IProductService{
                 if(data == null || data.size()==0){
                     //没有子类的情况
                     //根据该商品类型查询所有商品数据
-                    li = productMapper.selectByCategoryId(categoryId);
+                    li = PaiXuUtils.px3(orderBy,pageNum,pageSize,categoryId,keyword,productMapper);
+
+                    //li = productMapper.selectByCategoryId(categoryId);
                 }else{
                     //有子类的情况，应该返回所有子类商品
-                    li = productMapper.selectByCategoryIdAndData(categoryId,data);
+                    li = PaiXuUtils.px4(orderBy,pageNum,pageSize,categoryId,keyword,productMapper,data);
+
+                    //li = productMapper.selectByCategoryIdAndData(categoryId,data);
                 }
             }
         }else{
@@ -86,7 +94,9 @@ public class ProductServiceImpl implements IProductService{
                 //关键词模糊查询
                 keyword = "%"+keyword+"%";
 
-                li = productMapper.selectByKeyword(keyword);
+                li = PaiXuUtils.px5(orderBy,pageNum,pageSize,categoryId,keyword,productMapper);
+
+                //li = productMapper.selectByKeyword(keyword);
             }
         }
 
@@ -102,25 +112,15 @@ public class ProductServiceImpl implements IProductService{
         }
 
         //分页处理
-        //判断排序方式
-        if(orderBy.equals("")){
-            //不需要排序
-            PageHelper.startPage(pageNum,pageSize);
-        }else{
-            //按参数排序
-            String[] split = orderBy.split("_");
-            if(split.length>1){
-                PageHelper.startPage(pageNum,pageSize,split[0]+""+split[1]);
-            }else{
-                PageHelper.startPage(pageNum,pageSize);
-            }
-        }
         PageInfo pageInfo = new PageInfo(voList);
+
+
 
         //返回结果
         sr = ServerResponse.createServerResponseBySuccess(pageInfo);
         return sr;
     }
+
 
     /*获取产品detail*/
     @Override
