@@ -10,66 +10,58 @@ import java.util.List;
 /*获取一个BizContent对象*/
 public class BizContent {
 
-    private String outTradeNo;
+    private String out_trade_no;
 
-    private String sellerId;
+    private String seller_id;
 
-    private String totalAmount;
+    private String total_amount;
 
     private String discountableAmount;
 
-    private String undiscountableAmount;
+    private String undiscountable_amount;
     private String subject;
     private String body;
 
-    private List<GoodsDetail> goodsDetailList;
+    private List<GoodsDetail> goods_detail;
 
-    private String operatorId;
+    private String operator_id;
 
-    private String storeId;
+    private String store_id;
 
     private String alipayStoreId;
 
     private String terminalId;
 
-    private ExtendParams extendParams;
+    private ExtendParams extend_params;
 
-    private String timeoutExpress;
-    private String notifyUrl;
+    private String timeout_express;
+    private String notify_url;
 
     public BizContent() {
     }
 
-    public String getNotifyUrl() {
-        return notifyUrl;
+    public String getOut_trade_no() {
+        return out_trade_no;
     }
 
-    public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
+    public void setOut_trade_no(String out_trade_no) {
+        this.out_trade_no = out_trade_no;
     }
 
-    public String getOutTradeNo() {
-        return outTradeNo;
+    public String getSeller_id() {
+        return seller_id;
     }
 
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
+    public void setSeller_id(String seller_id) {
+        this.seller_id = seller_id;
     }
 
-    public String getSellerId() {
-        return sellerId;
+    public String getTotal_amount() {
+        return total_amount;
     }
 
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public String getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(String totalAmount) {
-        this.totalAmount = totalAmount;
+    public void setTotal_amount(String total_amount) {
+        this.total_amount = total_amount;
     }
 
     public String getDiscountableAmount() {
@@ -80,12 +72,12 @@ public class BizContent {
         this.discountableAmount = discountableAmount;
     }
 
-    public String getUndiscountableAmount() {
-        return undiscountableAmount;
+    public String getUndiscountable_amount() {
+        return undiscountable_amount;
     }
 
-    public void setUndiscountableAmount(String undiscountableAmount) {
-        this.undiscountableAmount = undiscountableAmount;
+    public void setUndiscountable_amount(String undiscountable_amount) {
+        this.undiscountable_amount = undiscountable_amount;
     }
 
     public String getSubject() {
@@ -104,28 +96,28 @@ public class BizContent {
         this.body = body;
     }
 
-    public List<GoodsDetail> getGoodsDetailList() {
-        return goodsDetailList;
+    public List<GoodsDetail> getGoods_detail() {
+        return goods_detail;
     }
 
-    public void setGoodsDetailList(List<GoodsDetail> goodsDetailList) {
-        this.goodsDetailList = goodsDetailList;
+    public void setGoods_detail(List<GoodsDetail> goods_detail) {
+        this.goods_detail = goods_detail;
     }
 
-    public String getOperatorId() {
-        return operatorId;
+    public String getOperator_id() {
+        return operator_id;
     }
 
-    public void setOperatorId(String operatorId) {
-        this.operatorId = operatorId;
+    public void setOperator_id(String operator_id) {
+        this.operator_id = operator_id;
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getStore_id() {
+        return store_id;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setStore_id(String store_id) {
+        this.store_id = store_id;
     }
 
     public String getAlipayStoreId() {
@@ -144,19 +136,27 @@ public class BizContent {
         this.terminalId = terminalId;
     }
 
-    public ExtendParams getExtendParams() {
-        return extendParams;
+    public ExtendParams getExtend_params() {
+        return extend_params;
     }
 
-    public void setExtendParams(ExtendParams extendParams) {
-        this.extendParams = extendParams;
+    public void setExtend_params(ExtendParams extend_params) {
+        this.extend_params = extend_params;
     }
 
-    public String getTimeoutExpress() {
-        return timeoutExpress;
+    public String getTimeout_express() {
+        return timeout_express;
     }
 
-    public void setTimeoutExpress(String timeoutExpress) {
-        this.timeoutExpress = timeoutExpress;
+    public void setTimeout_express(String timeout_express) {
+        this.timeout_express = timeout_express;
+    }
+
+    public String getNotify_url() {
+        return notify_url;
+    }
+
+    public void setNotify_url(String notify_url) {
+        this.notify_url = notify_url;
     }
 }

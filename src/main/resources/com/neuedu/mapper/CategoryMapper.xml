@@ -79,4 +79,10 @@
   <update id="updateName">
     update neuedu_category set name = #{name} where id = #{categoryId}
   </update>
+
+  <select id="selectTopCategory" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, parent_id, name, status, sort_order, create_time, update_time
+    from neuedu_category
+    where parent_id=#{sid}
+  </select>
 </mapper>

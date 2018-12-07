@@ -6,6 +6,7 @@ import com.neuedu.common.Const;
 import com.neuedu.pojo.*;
 import com.neuedu.pojo.pay.BizContent;
 import com.neuedu.pojo.pay.Configs;
+import com.neuedu.pojo.pay.PGoodsDetail;
 import com.neuedu.pojo.vo.*;
 
 import java.util.ArrayList;
@@ -159,10 +160,10 @@ public class POJOtoVOUtils {
     }
 
     /*商品详情和支付宝商品类转换*/
-    public static GoodsDetail getNewPay(OrderItem orderItem){
-        GoodsDetail info = new GoodsDetail();
-        info.setGoodsId(orderItem.getProductId().toString());
-        info.setGoodsName(orderItem.getProductName());
+    public static PGoodsDetail getNewPay(OrderItem orderItem){
+        PGoodsDetail info = new PGoodsDetail();
+        info.setGoods_id(orderItem.getProductId().toString());
+        info.setGoods_name(orderItem.getProductName());
         info.setPrice(orderItem.getCurrentUnitPrice().toString());
         info.setQuantity(orderItem.getQuantity().longValue());
         return info;
@@ -172,14 +173,14 @@ public class POJOtoVOUtils {
     public static BizContent getBizContent(Order order,List<OrderItem> orderItems){
         // (必填) 商户网站订单系统中唯一订单号，64个字符以内，只能包含字母、数字、下划线，
         // 需保证商户系统端不能重复，建议通过数据库sequence生成，
-        String outTradeNo = "tradeprecreate" + order.getOrderNo();
+        String outTradeNo = String.valueOf(order.getOrderNo());
 
         // (必填) 订单标题，粗略描述用户的支付目的。如“xxx品牌xxx门店当面付扫码消费”
-        String subject = "睿乐GO在线平台";
+        String subject = "睿乐GO在线平台"+order.getPayment();
 
         // (必填) 订单总金额，单位为元，不能超过1亿元
         // 如果同时传入了【打折金额】,【不可打折金额】,【订单总金额】三者,则必须满足如下条件:【订单总金额】=【打折金额】+【不可打折金额】
-        String totalAmount = "" + order.getPayment();
+        String totalAmount = String.valueOf(order.getPayment());
 
         // (可选) 订单不可打折金额，可以配合商家平台配置折扣活动，如果酒水不参与打折，则将对应金额填写至此字段
         // 如果该值未传入,但传入了【订单总金额】,【打折金额】,则该值默认为【订单总金额】-【打折金额】
@@ -190,16 +191,13 @@ public class POJOtoVOUtils {
         String sellerId = "";
 
         // 订单描述，可以对交易或商品进行一个详细地描述，比如填写"购买商品2件共15.00元"
-        //查找有多少商品详情
-
-
         String body = "购买商品"+orderItems.size()+"件共"+order.getPayment()+"元";
 
         // 商户操作员编号，添加此参数可以为商户操作员做销售统计
-        String operatorId = "test_operator_id";
+        String operatorId = "001";
 
         // (必填) 商户门店编号，通过门店号和商家后台可以配置精准到门店的折扣信息，详询支付宝技术支持
-        String storeId = "test_store_id";
+        String storeId = "001";
 
         // 业务扩展参数，目前可添加由支付宝分配的系统商编号(通过setSysServiceProviderId方法)，详情请咨询支付宝技术支持
         ExtendParams extendParams = new ExtendParams();
@@ -219,18 +217,18 @@ public class POJOtoVOUtils {
 
         BizContent biz = new BizContent();
         biz.setSubject(subject);
-        biz.setTotalAmount(totalAmount);
-        biz.setOutTradeNo(outTradeNo);
-        biz.setUndiscountableAmount(undiscountableAmount);
-        biz.setSellerId(sellerId);
+        biz.setTotal_amount(totalAmount);
+        biz.setOut_trade_no(outTradeNo);
+        biz.setUndiscountable_amount(undiscountableAmount);
+        biz.setSeller_id(sellerId);
         biz.setBody(body);
-        biz.setOperatorId(operatorId);
-        biz.setStoreId(storeId);
-        biz.setExtendParams(extendParams);
-        biz.setTimeoutExpress(timeoutExpress);
+        biz.setOperator_id(operatorId);
+        biz.setStore_id(storeId);
+        biz.setExtend_params(extendParams);
+        biz.setTimeout_express(timeoutExpress);
         //支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
-        biz.setNotifyUrl(Configs.getNotifyUrl_test()+"portal/order/alipay_callback.do");
-        biz.setGoodsDetailList(goodsDetailList);
+        //biz.setNotify_url(Configs.getNotifyUrl_test()+"portal/order/alipay_callback.do");
+        biz.setGoods_detail(goodsDetailList);
 
         return biz;
     }

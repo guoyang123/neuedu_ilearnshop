@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neuedu.common.Const;
 import com.neuedu.common.ServerResponse;
+import com.neuedu.dao.CategoryMapper;
 import com.neuedu.dao.ProductMapper;
 import com.neuedu.pojo.Category;
 import com.neuedu.pojo.Product;
@@ -23,6 +24,9 @@ public class ProductServiceImpl implements IProductService{
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     //注入后台品类业务层
     @Autowired
@@ -205,5 +209,14 @@ public class ProductServiceImpl implements IProductService{
                 }
             }
         }
+    }
+
+    /*获取产品顶级分类*/
+    @Override
+    public ServerResponse topcategory(Integer sid) {
+        ServerResponse sr = null;
+        List<Category> categories = categoryMapper.selectTopCategory(sid);
+        sr = ServerResponse.createServerResponseBySuccess(categories);
+        return sr;
     }
 }

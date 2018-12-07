@@ -28,6 +28,10 @@ public class Configs {
     private static long heartbeatDelay;
     private static long heartbeatDuration;
 
+    //二维码生成保存路径
+    private static String savecode_test;
+    private static String savecode_realy;
+
     private Configs() {
     }
 
@@ -58,6 +62,9 @@ public class Configs {
                 heartbeatDuration = configs.getLong("heartbeat_duration");
                 notifyUrl_test= configs.getString("NotifyUrl_TEST");
                 notifyUrl_realy=configs.getString("NotifyUrl_REALY");
+                savecode_test=configs.getString("save_test");
+                savecode_realy=configs.getString("save_realy");
+
                 log.info("配置文件名: " + filePath);
                 log.info(description());
             }
@@ -88,6 +95,22 @@ public class Configs {
         sb.append(", 交易保障调度间隔(秒): ").append(heartbeatDuration).append("\n");
         sb.append("}");
         return sb.toString();
+    }
+
+    public static String getSavecode_test() {
+        return savecode_test;
+    }
+
+    public static void setSavecode_test(String savecode_test) {
+        Configs.savecode_test = savecode_test;
+    }
+
+    public static String getSavecode_realy() {
+        return savecode_realy;
+    }
+
+    public static void setSavecode_realy(String savecode_realy) {
+        Configs.savecode_realy = savecode_realy;
     }
 
     private static String getKeyDescription(String key) {

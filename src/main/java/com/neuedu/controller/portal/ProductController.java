@@ -38,4 +38,12 @@ public class ProductController {
 
         return sr;
     }
+
+    /*获取产品分类*/
+    @RequestMapping("topcategory.do")
+    public ServerResponse topcategory(@RequestParam(required = false,defaultValue="0") Integer sid){
+        ServerResponse sr = productService.topcategory(sid);
+
+        return sr;
+    }
 }

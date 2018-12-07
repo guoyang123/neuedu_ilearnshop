@@ -3,7 +3,9 @@ package com.neuedu.service.impl;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayOpenPublicTemplateMessageIndustryModifyRequest;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
+import com.alipay.api.response.AlipayOpenPublicTemplateMessageIndustryModifyResponse;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +39,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
@@ -54,7 +58,9 @@ public class OrderServiceImpl implements IOrderService {
     private CategoryMapper categoryMapper;
     @Autowired
     private ShippingMapper shippingMapper;
-    
+    @Autowired
+    private PayInfoMapper payInfoMapper;
+
     /*参数非空校验*/
     private ServerResponse emptyParam(Integer shippingId) {
         ServerResponse sr = null;
@@ -433,9 +439,12 @@ public class OrderServiceImpl implements IOrderService {
                 String filePath = String.format("D:/payimages/qr-%s.png",
                         response.getOutTradeNo());
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
-    
+
                 //预下单成功返回信息
-                sr = ServerResponse.createServerResponseBySuccess(filePath);
+                Map map =new HashMap();
+                map.put("orderNo",order.getOrderNo());
+                map.put("qrCode",filePath);
+                sr = ServerResponse.createServerResponseBySuccess(map);
                 return sr;
             }else{
                 //预下单失败
@@ -448,9 +457,6 @@ public class OrderServiceImpl implements IOrderService {
             sr = ServerResponse.createServerResponseByError(Const.PaymentPlatformEnum.ALIPAY_FALSE.getCode(),Const.PaymentPlatformEnum.ALIPAY_FALSE.getDesc());
             return sr;
         }
-    
-        //支付成功，修改订单状态、支付时间、最后一次更新时间，并返回成功信息
-        //支付失败，不做修改，返回失败信息
     }
 
     // 测试当面付2.0生成支付二维码
@@ -465,17 +471,93 @@ public class OrderServiceImpl implements IOrderService {
     
         //创建API对应的request类
         AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
+
     
         //获取一个BizContent对象,并转换成json格式
-        request.setBizContent(JsonUtils.obj2String(POJOtoVOUtils.getBizContent(order,orderItems)));
-    
+        String str = JsonUtils.obj2String(POJOtoVOUtils.getBizContent(order,orderItems));
+        request.setBizContent(str);
+        request.setNotifyUrl(Configs.getNotifyUrl_test()+"portal/order/alipay_callback.do");
         //获取响应,这里要处理一下异常
         AlipayTradePrecreateResponse response = alipayClient.execute(request);
-    
+
+
         //返回响应的结果
         return response;
     }
 
+    /*支付宝回调函数*/
+    @Override
+    public ServerResponse alipayCallback(Map<String, String> map) {
+        ServerResponse sr = null;
+
+        //step1:获取ordrNo
+        Long orderNo=Long.parseLong(map.get("out_trade_no"));
+        //step2:获取流水号
+        String tarde_no=map.get("trade_no");
+        //step3:获取支付状态
+        String trade_status=map.get("trade_status");
+        //step4:获取支付时间
+        String payment_time=map.get("gmt_payment");
+
+
+        Order order=orderMapper.selectByOrderNo(orderNo);
+        if(order==null){
+            //不是要付款的订单
+            sr = ServerResponse.createServerResponseByError(Const.PaymentPlatformEnum.VERIFY_ORDER_FALSE.getCode(),orderNo+Const.PaymentPlatformEnum.VERIFY_ORDER_FALSE.getDesc());
+            return sr;
+        }
+
+        if(order.getStatus()>=Const.OrderStatusEnum.ORDER_PAYED.getCode()){
+            //防止支付宝重复回调
+            sr = ServerResponse.createServerResponseByError(Const.PaymentPlatformEnum.REPEAT_USEALIPAY.getCode(),Const.PaymentPlatformEnum.REPEAT_USEALIPAY.getDesc());
+            return sr;
+        }
+
+        if(trade_status.equals(Const.TRADE_SUCCESS)){
+            //校验状态码，支付成功
+            //更改数据库中订单的状态+更改支付时间+更新时间
+            order.setStatus(Const.OrderStatusEnum.ORDER_PAYED.getCode());
+            order.setPaymentTime(DateUtils.strToDate(payment_time));
+            orderMapper.updateByPrimaryKey(order);
+        }
+
+        //保存支付宝支付信息
+        PayInfo payInfo=new PayInfo();
+        payInfo.setOrderNo(orderNo);
+        payInfo.setPayPlatform(Const.PaymentPlatformEnum.ALIPAY.getCode());
+        payInfo.setPlatformStatus(trade_status);
+        payInfo.setPlatformNumber(tarde_no);
+        payInfo.setUserId(order.getUserId());
+
+        int result= payInfoMapper.insert(payInfo);
+        if(result>0){
+            //支付信息保存成功返回结果
+            sr = ServerResponse.createServerResponseBySuccess("支付信息保存成功");
+            return sr;
+        }
+        //支付信息保存失败返回结果
+        sr = ServerResponse.createServerResponseByError(Const.PaymentPlatformEnum.SAVEPAYMSG_FALSE.getCode(),Const.PaymentPlatformEnum.SAVEPAYMSG_FALSE.getDesc());
+        return sr;
+    }
+
+    //支付成功，修改订单状态、支付时间、最后一次更新时间，并返回成功信息
+    //支付失败，不做修改，返回失败信息
+
+    /*查询订单支付状态*/
+    @Override
+    public ServerResponse queryOrderPayStatus(Long orderNo) {
+        if(orderNo==null){
+            return  ServerResponse.createServerResponseByError("订单号不能为空");
+        }
+        Order order= orderMapper.selectByOrderNo(orderNo);
+        if(order==null){
+            return ServerResponse.createServerResponseByError("订单不存在");
+        }
+        if(order.getStatus()==Const.OrderStatusEnum.ORDER_PAYED.getCode()){
+            return ServerResponse.createServerResponseBySuccess(true);
+        }
+        return ServerResponse.createServerResponseBySuccess(false);
+    }
 
     /**
      * 配置取消订单日志记录

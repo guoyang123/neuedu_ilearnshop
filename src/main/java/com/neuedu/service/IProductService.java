@@ -20,4 +20,7 @@ public interface IProductService {
                              @RequestParam(required = false,defaultValue="0") Integer is_new,
                              @RequestParam(required = false,defaultValue="0") Integer is_hot,
                              @RequestParam(required = false,defaultValue="0") Integer is_banner);
+
+    /*获取产品顶级分类*/
+    ServerResponse topcategory(Integer sid);
 }

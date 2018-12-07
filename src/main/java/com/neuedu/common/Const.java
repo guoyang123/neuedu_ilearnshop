@@ -262,7 +262,11 @@ public class Const {
     public  enum PaymentPlatformEnum{
 
         ALIPAY(1,"支付宝"),
-        ALIPAY_FALSE(301,"支付宝预下单失败")
+        ALIPAY_FALSE(ResponseCode.ALIPAY_FALSE,"支付宝预下单失败"),
+        VERIFY_SIGNATURE_FALSE(ResponseCode.VERIFY_SIGNATURE_FALSE,"支付宝验签失败"),
+        VERIFY_ORDER_FALSE(ResponseCode.VERIFY_ORDER_FALSE,"不是本商品的订单"),
+        REPEAT_USEALIPAY(ResponseCode.REPEAT_USEALIPAY,"支付宝重复调用"),
+        SAVEPAYMSG_FALSE(ResponseCode.SAVEPAYMSG_FALSE,"支付信息保存失败")
         ;
         private  int  code;
         private String desc;
