@@ -440,7 +440,7 @@ public class OrderServiceImpl implements IOrderService {
             //成功执行下一步
             if (response.isSuccess()) {
                 // 将二维码信息串生成图片，并保存，（需要修改为运行机器上的路径）
-                String filePath = String.format("D:/payimages/qr-%s.png",
+                String filePath = String.format("/neuedu/qrcode/qr-%s.png",
                         response.getOutTradeNo());
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
 
@@ -488,7 +488,7 @@ public class OrderServiceImpl implements IOrderService {
         String str = JsonUtils.obj2String(POJOtoVOUtils.getBizContent(order, orderItems));
         request.setBizContent(str);
         //设置支付宝回调路径
-        request.setNotifyUrl(Configs.getNotifyUrl_test() + "portal/order/alipay_callback.do");
+        request.setNotifyUrl(Configs.getNotifyUrl_realy() + "portal/order/alipay_callback.do");
         //获取响应,这里要处理一下异常
         AlipayTradePrecreateResponse response = alipayClient.execute(request);
 
@@ -537,7 +537,7 @@ public class OrderServiceImpl implements IOrderService {
             orderMapper.updateByPrimaryKey(order);
 
             //支付成功，删除本地存在的二维码图片
-            String str = String.format("D:/payimages/qr-%s.png",
+            String str = String.format("/neuedu/qrcode/qr-%s.png",
                     order.getOrderNo());
             File file = new File(str);
             boolean b = file.delete();
