@@ -5,6 +5,7 @@ import com.neuedu.common.ServerResponse;
 import com.neuedu.dao.UserInfoMapper;
 import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.IUserService;
+import com.neuedu.util.IpUtils;
 import com.neuedu.util.MD5Utils;
 import com.neuedu.util.TokenCache;
 import org.apache.ibatis.annotations.Param;
@@ -48,7 +49,8 @@ public class UserServiceImpl implements IUserService {
         if(ui != null){
             //处理日期
             //保存session
-            session.setAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc(),ui);
+
+            //session.setAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc(),ui);
 
             //不向前台传送密码
             UserInfo uo = new UserInfo();
