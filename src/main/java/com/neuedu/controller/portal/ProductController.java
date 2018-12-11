@@ -48,4 +48,12 @@ public class ProductController {
 
         return sr;
     }
+
+    /*日志空接口*/
+    @RequestMapping("logempty.do")
+    public ServerResponse logempty(){
+        ServerResponse sr = ServerResponse.createServerResponseBySuccess("调用成功！");
+
+        return sr;
+    }
 }

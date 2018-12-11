@@ -41,7 +41,7 @@ public class UserController {
 //        logger.info(info);
         ServerResponse<UserInfo> sr = userService.selectByUserName(session, username, password);
         //判断状态码为0，创建session
-        if (sr.isSuccess() && sr != null) {
+        if (sr != null && sr.isSuccess()) {
             //更新用户ip
             String userIp = IpUtils.getRemoteAddress(request);
             sr.getData().setUserIp(userIp);
