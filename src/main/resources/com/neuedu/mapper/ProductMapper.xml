@@ -95,7 +95,7 @@
     select id, category_id, name, subtitle, main_image, price, status
     from neuedu_product
     <where>
-      name like #{keyword} and category_id in
+      name like #{keyword} and is_new=0 and is_banner=0 and is_hot=0 and category_id in
       <foreach collection="data" item="data_i" open="(" close=")" separator=",">
         #{data_i}
       </foreach>
@@ -110,7 +110,7 @@
     -->
     select id, category_id, name, subtitle, main_image, price, status
     from neuedu_product
-    where category_id=#{categoryId} and name like #{keyword}
+    where category_id=#{categoryId} and is_new=0 and is_banner=0 and is_hot=0 and name like #{keyword}
   </select>
 
   <!--/*categoryId非空_keyword空_categoryId下面有子类_查询所有子类所有商品*/-->
@@ -122,6 +122,7 @@
     select id, category_id, name, subtitle, main_image, price, status
     from neuedu_product
     <where>
+      is_new=0 and is_banner=0 and is_hot=0 and
       category_id in
       <foreach collection="data" item="data_i" open="(" close=")" separator=",">
         #{data_i}
@@ -137,7 +138,7 @@
     -->
     select id, category_id, name, subtitle, main_image, price, status
     from neuedu_product
-    where category_id=#{categoryId}
+    where category_id=#{categoryId} and is_new=0 and is_banner=0 and is_hot=0
   </select>
 
   <!--/*categoryId空_keyword非空_查询所有分类包含关键词的商品*/-->
@@ -148,7 +149,7 @@
     -->
     select id, category_id, name, subtitle, main_image, price, status
     from neuedu_product
-    where name like #{keyword}
+    where name like #{keyword} and is_new=0 and is_banner=0 and is_hot=0
   </select>
 
   <!--/*根据商品id查询最新商品*/-->
@@ -196,20 +197,8 @@
     -->
     select id, category_id, name, subtitle, main_image, price, stock, status, is_new,is_hot,is_banner,create_time,
     update_time, sub_images, detail
-    from neuedu_product
-    <where>
-      <if test="is_new == 1">
-        is_new=#{is_new}
-      </if>
+    from neuedu_product where is_new=#{is_new} and is_hot=#{is_hot} and is_banner=#{is_banner}
 
-      <if test="is_hot == 1">
-        is_hot=#{is_hot}
-      </if>
-
-      <if test="is_banner == 1">
-        is_banner=#{is_banner}
-      </if>
-    </where>
   </select>
 
 </mapper>

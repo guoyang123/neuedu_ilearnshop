@@ -139,15 +139,16 @@ public class ProductServiceImpl implements IProductService{
             List<Product> productList = new ArrayList<>();
             List<ProductVO> voList = new ArrayList<>();
             //搜索最新商品
-            if(is_new ==1 || is_hot ==1 || is_banner == 1){
-                productList = productMapper.selectBys_NewAndIs_HotAndIs_Banner(is_new,is_hot,is_banner);
-            }
+//            if(is_new ==1 || is_hot ==1 || is_banner == 1){
+//                productList = productMapper.selectBys_NewAndIs_HotAndIs_Banner(is_new,is_hot,is_banner);
+//            }
+//
+//            //参数都为0查询所有数据
+//            if(is_new ==0 && is_hot ==0 && is_banner == 0){
+//                productList = productMapper.selectAll();
+//            }
 
-            //参数都为0查询所有数据
-            if(is_new ==0 && is_hot ==0 && is_banner == 0){
-                productList = productMapper.selectAll();
-            }
-
+            productList = productMapper.selectBys_NewAndIs_HotAndIs_Banner(is_new,is_hot,is_banner);
 
             if(productList == null){
                 sr = ServerResponse.createServerResponseByError(Const.ProductStatusEnum.NO_PRODUCT.getCode(),Const.ProductStatusEnum.NO_PRODUCT.getDesc());

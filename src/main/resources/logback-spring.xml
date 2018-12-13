@@ -57,6 +57,7 @@
 
 
     <appender name="orderLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>order.log</file>
 
 
         <!-- 过滤器，只记录INFO级别的日志 -->
@@ -87,9 +88,11 @@
         <!--</rollingPolicy>-->
 
 
-        <File>order.log</File>
+
+
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy" >
             <FileNamePattern>/neuedu/bigdatalog/bigdatalog/order.%i.log.zip</FileNamePattern>
+
             <minIndex>1</minIndex>
             <maxIndex>10</maxIndex>
         </rollingPolicy>
