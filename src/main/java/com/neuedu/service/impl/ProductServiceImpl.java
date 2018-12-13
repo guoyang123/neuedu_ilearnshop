@@ -37,7 +37,7 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public ServerResponse getList(Integer categoryId, String keyword,Integer pageNum, Integer pageSize, String orderBy) {
         ServerResponse sr = null;
-        PageHelper.startPage(pageNum,pageSize);
+
         List<Product> li = new ArrayList<>();
         List<ProductVO> voList = new ArrayList<>();
 
@@ -111,9 +111,10 @@ public class ProductServiceImpl implements IProductService{
             voList.add(aNew);
         }
 
-        //分页处理
-        PageInfo pageInfo = new PageInfo(voList);
-
+        //分页处理,传入原始查询数据
+        PageInfo pageInfo = new PageInfo(li,4);
+        //再把封装数据设置进来
+        pageInfo.setList(voList);
 
 
         //返回结果
