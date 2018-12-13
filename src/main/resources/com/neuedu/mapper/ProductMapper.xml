@@ -196,20 +196,8 @@
     -->
     select id, category_id, name, subtitle, main_image, price, stock, status, is_new,is_hot,is_banner,create_time,
     update_time, sub_images, detail
-    from neuedu_product
-    <where>
-      <if test="is_new == 1">
-        is_new=#{is_new}
-      </if>
+    from neuedu_product where is_new=#{is_new} and is_hot=#{is_hot} and is_banner=#{is_banner}
 
-      <if test="is_hot == 1">
-        is_hot=#{is_hot}
-      </if>
-
-      <if test="is_banner == 1">
-        is_banner=#{is_banner}
-      </if>
-    </where>
   </select>
 
 </mapper>
