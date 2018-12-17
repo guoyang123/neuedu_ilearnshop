@@ -78,22 +78,22 @@
 
 
         <!--滚动策略，每天一个日志文件-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--路径 /neuedu/bigdatalog-->
-            <fileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%d.log</fileNamePattern>
-            <!-- 日志最大的历史 10天 -->
-            <maxHistory>10</maxHistory>
-        </rollingPolicy>
-
-
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy" >-->
-            <!--<FileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%i.log</FileNamePattern>-->
-            <!--<minIndex>1</minIndex>-->
-            <!--<maxIndex>10</maxIndex>-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash;路径 /neuedu/bigdatalog&ndash;&gt;-->
+            <!--<fileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%d.log</fileNamePattern>-->
+            <!--&lt;!&ndash; 日志最大的历史 10天 &ndash;&gt;-->
+            <!--<maxHistory>10</maxHistory>-->
         <!--</rollingPolicy>-->
-        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
-            <!--<maxFileSize>10MB</maxFileSize>-->
-        <!--</triggeringPolicy>-->
+
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy" >
+            <FileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%i.log</FileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>10</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>10MB</maxFileSize>
+        </triggeringPolicy>
 
     </appender>
 
