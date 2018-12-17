@@ -57,7 +57,7 @@
 
 
     <appender name="orderLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-
+        <file>order.log</file>
         <!-- 过滤器，只记录INFO级别的日志 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
