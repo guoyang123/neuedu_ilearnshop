@@ -83,6 +83,8 @@
         <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
             <!--&lt;!&ndash;路径 /neuedu/bigdatalog  /Users/guoyang/Desktop&ndash;&gt;-->
             <!--<fileNamePattern>/neuedu/bigdatalog/bigdatalog/order.%d.log</fileNamePattern>-->
+            <!--&lt;!&ndash;路径 /neuedu/bigdatalog&ndash;&gt;-->
+            <!--<fileNamePattern>/Users/guoyang/Desktop/bigdatalog/order.%d.log</fileNamePattern>-->
             <!--&lt;!&ndash; 日志最大的历史 10天 &ndash;&gt;-->
             <!--<maxHistory>10</maxHistory>-->
         <!--</rollingPolicy>-->

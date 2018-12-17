@@ -58,23 +58,18 @@ public class PortalAuthorityInterceptor implements HandlerInterceptor {
             PrintWriter writer = response.getWriter();
 
             //
-            ServerResponse sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.NO_LOGIN.getCode(),Const.ReponseCodeEnum.NO_LOGIN.getDesc());
+            ServerResponse sr = ServerResponse.createServerResponseByError(Const.ReponseCodeEnum.NO_LOGIN.getCode(),"NO LOGIN");
 
             //转换成json
             String s = JsonUtils.obj2String(sr);
 //            writer.write(s);
-            writer.println(sr.getMsg());
+            writer.println(s);
             writer.flush();
             writer.close();
 
             //返回数据
             return false;
-
         }
-
-
-        //用户没有权限
-
         return true;
     }
 }
