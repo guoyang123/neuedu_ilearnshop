@@ -286,13 +286,14 @@ public class OrderServiceImpl implements IOrderService {
     public ServerResponse getlist(HttpSession session, Integer pageSize, Integer pageNum) {
         ServerResponse sr = null;
 
-        //设置分页插件
-        PageHelper.startPage(pageNum, pageSize);
+
 
         //设置orderVoList
         List<OrderVO> voList = new ArrayList<OrderVO>();
 
         //获取用户对应订单
+        //设置分页插件
+        PageHelper.startPage(pageNum, pageSize);
         List<Order> orders = orderMapper.selectByUID(OpinionUtils.getUID(session));
 
         //判断是否有订单
@@ -318,8 +319,9 @@ public class OrderServiceImpl implements IOrderService {
             voList.add(orderVO);
         }
 
-        //分页处理
-        PageInfo pageInfo = new PageInfo(voList);
+        //分页处理,传入原始值
+        PageInfo pageInfo = new PageInfo(orders);
+        pageInfo.setList(voList);
         sr = ServerResponse.createServerResponseBySuccess(pageInfo);
         return sr;
     }
