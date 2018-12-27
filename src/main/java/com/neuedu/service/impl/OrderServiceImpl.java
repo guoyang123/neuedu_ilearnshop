@@ -320,7 +320,7 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         //分页处理,传入原始值
-        PageInfo pageInfo = new PageInfo(orders);
+        PageInfo pageInfo = new PageInfo(orders,4);
         pageInfo.setList(voList);
         sr = ServerResponse.createServerResponseBySuccess(pageInfo);
         return sr;
