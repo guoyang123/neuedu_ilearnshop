@@ -450,7 +450,7 @@ public class OrderServiceImpl implements IOrderService {
                 //存到七牛云服务器上
                 String keys = "qr-"+response.getOutTradeNo()+".png";
                 DefaultPutRet putRet1 = QiuNiuUtils.upLoadImage(filePath,keys);
-                String qiniu = "http://piwbqm1dn.bkt.clouddn.com/";
+                String qiniu = PropertiesUtils.readByKey("imageHost");
 
                 //预下单成功返回信息
                 Map map = new HashMap();
