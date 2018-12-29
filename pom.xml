@@ -221,6 +221,7 @@
 	</dependencies>
 
 	<build>
+        <finalName>ilearn</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>

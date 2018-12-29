@@ -18,7 +18,7 @@ public class NeueduAnalyticsEngineSDK {
 	// 日志打印对象
 	private static final Logger log = Logger.getGlobal();
 	// 请求url的主体部分  -->订单确认页
-	public static final String domain="http://business.top:8089";
+	public static final String domain="http://www.business.top:8089";
 	public static final String orderURI = "/portal/order/create.do";
 	public static final String cancelOrderURI = "/portal/order/cancel.do";
 	private static final String platformName = "java_server";

@@ -450,7 +450,7 @@ public class OrderServiceImpl implements IOrderService {
                 //存到七牛云服务器上
                 String keys = "qr-"+response.getOutTradeNo()+".png";
                 DefaultPutRet putRet1 = QiuNiuUtils.upLoadImage(filePath,keys);
-                String qiniu = "http://piwbqm1dn.bkt.clouddn.com/";
+                String qiniu = PropertiesUtils.readByKey("imageHost");
 
                 //预下单成功返回信息
                 Map map = new HashMap();
@@ -543,6 +543,8 @@ public class OrderServiceImpl implements IOrderService {
                     order.getOrderNo());
             File file = new File(str);
             boolean b = file.delete();
+            //记录订单支付成功的日志信息
+            recordOrderPaidLog(order.getOrderNo());
         }
 
         //保存支付宝支付信息
@@ -594,6 +596,17 @@ public class OrderServiceImpl implements IOrderService {
         String userIp = userInfo.getUserIp() != null ? userInfo.getUserIp() : "0.0.0.0";
 
         String info = NeueduAnalyticsEngineSDK.recordCancelOrderLog(userIp, String.valueOf(orderno),
+                String.valueOf(userInfo.getId()),
+                String.valueOf(order.getCreateTime().getTime()),
+                System.currentTimeMillis() + "");
+        logger.info(info);
+    }
+    public void recordOrderPaidLog(Long orderno) {
+        Order order = orderMapper.selectByOrderNo(orderno);
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(order.getUserId());
+        String userIp = userInfo.getUserIp() != null ? userInfo.getUserIp() : "0.0.0.0";
+
+        String info = NeueduAnalyticsEngineSDK.recordPaidOrderLog(userIp, String.valueOf(orderno),
                 String.valueOf(userInfo.getId()),
                 String.valueOf(order.getCreateTime().getTime()),
                 System.currentTimeMillis() + "");

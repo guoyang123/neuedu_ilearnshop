@@ -26,8 +26,9 @@ public class MySpringBootConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(manageAuthorityInterceptor).addPathPatterns("/manage/**").
-                excludePathPatterns("/manage/user/login.do");
+        //不在拦截后台接口
+//        registry.addInterceptor(manageAuthorityInterceptor).addPathPatterns("/manage/**").
+//                excludePathPatterns("/manage/user/login.do");
 
         List<String> excludeList= Lists.newArrayList();
         excludeList.add("/portal/user/login.do");//前台登录
