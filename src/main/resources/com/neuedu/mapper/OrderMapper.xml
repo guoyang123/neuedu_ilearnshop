@@ -91,7 +91,7 @@
     select id, user_id, order_no, shipping_id, payment, payment_type, postage, status,
     payment_time, send_time, end_time, close_time, create_time, update_time
     from neuedu_order
-    where user_id = #{uid,jdbcType=INTEGER}
+    where user_id = #{uid,jdbcType=INTEGER} order by id desc
   </select>
 
   <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.Long" >
