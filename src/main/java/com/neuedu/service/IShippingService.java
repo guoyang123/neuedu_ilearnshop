@@ -12,5 +12,6 @@ public interface IShippingService {
     public ServerResponse update(Shipping shipping);
     public ServerResponse select(Integer shippingId);
     public ServerResponse list(Integer pageNum, Integer pageSize);
+    public ServerResponse listByUserid(Integer userid,Integer pageNum, Integer pageSize);
 
 }

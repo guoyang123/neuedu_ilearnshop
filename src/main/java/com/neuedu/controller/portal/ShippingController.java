@@ -51,8 +51,9 @@ public class ShippingController {
     }
 
     @GetMapping("list.do")
-    public ServerResponse list(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
+    public ServerResponse list(HttpSession session,@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "10")Integer pageSize){
-        return shippingService.list(pageNum,pageSize);
+        UserInfo userInfo = (UserInfo) session.getAttribute(Const.RoleEnum.ROLE_CUSTOMER.getDesc());
+        return shippingService.listByUserid(userInfo.getId(),pageNum,pageSize);
     }
 }

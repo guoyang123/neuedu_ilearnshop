@@ -74,4 +74,13 @@ public class ShippingServiceImpl implements IShippingService {
         return ServerResponse.createServerResponseBySuccess(pageInfo);
     }
 
+    @Override
+    public ServerResponse listByUserid(Integer userid, Integer pageNum, Integer pageSize) {
+
+        PageHelper.startPage(pageNum,pageSize);
+        List<Shipping> shippingList = shippingMapper.selectByUserid(userid);
+        PageInfo pageInfo = new PageInfo(shippingList);
+        return ServerResponse.createServerResponseBySuccess(pageInfo);
+    }
+
 }
